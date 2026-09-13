@@ -1,3 +1,7 @@
+## README reliability clarification
+
+Removed hosting and demo-status prose from README at user request; their truthful status remains in the submission manifest and implementation records. Added sourced product-scope comparison with Poke/Instinct, grounding sources, save-before-write, bounded retry, provider reconciliation, uncertainty and separate watchdog/restart explanations. Explicitly distinguished measured local behavior from untested distributed scaling and incomplete offer-to-Stripe integration. No new reliability or competitor-performance result is claimed.
+
 ## Current hosting decision
 
 User selected free-only hosting; no paid Render resources authorized or provisioned. README simplified to the five requested sections, with reasons for design choices and explicit unfinished work. Repository visibility was independently checked as PUBLIC after the user changed it; older PRIVATE statements below describe historical checks. Free hosting requires adapting persistent storage; no Vercel compatibility or deployment is claimed.

@@ -15,7 +15,13 @@ A customer can write “the package was broken,” “damanged item,” or descr
 - **Try a resolution:** customer and operator pages, natural-language conversations, different merchant-approved offers, saved agreements and simulated refunds. Offers come from [merchant settings](config/resolutions.json), not amounts invented by an agent.
 - **Real app demonstration:** Gmail intake and verification, a $30 Stripe TEST refund on a $100 payment, a customer email and a Slack update. [All three were checked in the same run](evidence/connected-ordinary-run.json).
 
-**Still to finish:** connecting negotiated offers to Stripe, testing a crash during a real Stripe run, free hosting and the demo video. The negotiated-offer playground currently uses simulated payments. The fixed $30 example remains a repeatable test of duplicate-refund prevention.
+**Still to finish:** connecting negotiated offers to Stripe and testing a crash during a real Stripe run. The negotiated-offer playground currently uses simulated payments. The fixed $30 example remains a repeatable test of duplicate-refund prevention.
+
+### How this differs from a general assistant
+
+[Poke](https://poke.com/docs) offers everyday help through messaging, including email and calendar tasks. [Instinct](https://instinct.com/) describes a personal assistant you can text or call to act across apps and devices.
+
+ReturnPath focuses on one job: resolving a return with a merchant. It makes the two parties, permitted offers, accepted terms and payment evidence visible. Its main experiment asks what happens if a payment succeeds but the worker dies before saving the result. This is a difference in scope and what we test, not a claim that those products lack safeguards or that we have outperformed them.
 
 ## 2. External apps
 
@@ -58,7 +64,7 @@ make connected-dev
 
 Send an email from the configured customer mailbox with `order 4127` in the body, then confirm the emailed verification link. **For an existing case, restart with only `make connected-dev`. Never reseed it.** Stop with Ctrl+C.
 
-Keep passwords, API keys and Gmail tokens outside the repository. We use SQLite to keep the local setup small and preserve records across restarts. A free hosted version needs separate persistent storage; no public deployment is running yet. Paid hosting is not being provisioned.
+Keep passwords, API keys and Gmail tokens outside the repository. We use SQLite to keep the local setup small and preserve records across restarts.
 
 ## 4. How we check reliability
 
@@ -76,12 +82,31 @@ make submission-check
 - **Real Stripe check passed:** one $30 refund on the $100 TEST payment, verified from provider records rather than the app's success label.
 - **Four language examples passed:** [actual model results](evidence/language-smoke.json), including typos and clarification replies. This is a small check, not proof that every conversation works.
 
-The watchdog detects and alerts; a person restarts the worker. Uncertain email delivery is not treated as proof that sending failed. Gmail changed our supplied Message-ID, so recovery from an uncertain send still needs work.
+### What the agent is grounded in
+
+The model interprets language; it does not decide what money it may spend. Offers come from saved merchant settings. The customer must accept an exact offer. In the connected workflow, identity is checked through a link sent to the address on the trusted order, and payment status comes from Stripe. A customer saying “it arrived damaged” remains a claim, not verified warehouse evidence. Warehouse acceptance is currently simulated.
+
+### What happens when something fails
+
+| Principle | What the code does and why |
+|---|---|
+| Save before acting | Records the refund identity, fixed parameters and attempt before calling the provider. A restart must use the same operation. |
+| Check before retrying | Reads all refund pages and checks existing provider records. A timeout does not mean the refund failed. |
+| Bound retries | Uses the same payment key, at most three attempts within 23 hours, with backoff. It stops for review rather than trying forever or changing the key. |
+| Keep uncertainty visible | Missing or conflicting facts cannot authorize another payment. An uncertain outcome email is not blindly resent. |
+| Separate detection from recovery | A separate watchdog detects a stale worker. A person restarts it; the worker then checks provider records to recover its state. This is tested recovery after restart, not automatic self-healing. |
+| Check results independently | Tests inspect the provider's records, not just the app's “success” flag. A negative test deliberately creates a duplicate refund to show that the checker catches it. |
+
+These payment rules apply to the connected fixed-amount workflow. The offer playground separately tests changed terms, expired offers, other customers' access and repeated acceptance. Its payment records are simulated. A negotiation interrupted during a model call still requires operator inspection.
+
+### Benchmarking and larger scale
+
+The [evaluation script](scripts/resolution_eval.py) runs the same named scenarios repeatedly, with fresh records for each trial and explicit expected outcomes. Reports distinguish actual model calls from the offline substitute. The current evidence is 77 automated tests, 30 repeated offline episodes, three earlier live-model scenarios and four language scenarios. These are different measurements and must not be added together as one success rate. Broad repeated live-model and adversarial testing is still needed.
+
+The current worker runs on one machine and uses an operating-system lock to prevent a second worker from owning the same records. **We have not tested distributed operation or high traffic.** At larger scale, ownership must be enforced across machines, accepted terms must remain durable, and retries must still refer to the same operation. A shared transactional database, worker ownership that survives failover, provider rate-limit handling, and load/failure tests would be required. The present results establish a small, stated failure model—not proof that adding servers will preserve correctness.
+
+Gmail changed our supplied Message-ID, so recovery from an uncertain send still needs work. Prompts and merchant rules stay fixed during a run; there is no online policy rewriting.
 
 Missing evidence keeps `submission-check` blocked. See the [reliability notes](docs/RELIABILITY_BRIEF.md), [implementation status](IMPLEMENTATION_STATUS.md) and [submission manifest](submission.json) for details.
-
-## 5. Demo video
-
-**Not recorded yet.** The final video will be no longer than two minutes and linked here. It will show the customer request, agent responses, the three apps and the failure/recovery test, with simulated parts clearly labeled. [Recording plan](docs/DEMO_SCRIPT.md).
 
 [Build history and AI assistance](docs/PROVENANCE.md) · [Reviewer guide](JUDGE_GUIDE.md)
