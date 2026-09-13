@@ -1,3 +1,7 @@
+# Paid Render option — not selected
+
+The user chose free-only hosting. Do not apply this paid configuration. The instructions below are retained as a reference, not the active deployment plan. No service was purchased.
+
 # Hosting the playground on Render
 
 Status: configuration prepared and local boundary tests passed; no service purchased or deployed.

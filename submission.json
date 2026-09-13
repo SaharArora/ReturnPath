@@ -106,7 +106,7 @@
     ],
     "catalog": "config/resolutions.json",
     "deployment_url": null,
-    "hosting": "Render blueprint prepared; not deployed",
+    "hosting": "Free-only hosting requested; paid Render option not selected; not deployed",
     "prompt_revision": "resolution-v2"
   }
 }

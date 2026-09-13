@@ -1,3 +1,7 @@
+## Current hosting decision
+
+User selected free-only hosting; no paid Render resources authorized or provisioned. README simplified to the five requested sections, with reasons for design choices and explicit unfinished work. Repository visibility was independently checked as PUBLIC after the user changed it; older PRIVATE statements below describe historical checks. Free hosting requires adapting persistent storage; no Vercel compatibility or deployment is claimed.
+
 ## Hosting and natural-language checkpoint
 
 User authorized hosting preparation; paid Render provisioning awaits budget/account confirmation. Added isolated hosted app factory, HTTPS cookies, exact host checks, financial/messaging credential rejection, no connected routes, persistent-disk blueprint and setup guide. No hosted URL exists yet.

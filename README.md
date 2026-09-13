@@ -1,33 +1,35 @@
 # ReturnPath
 
-## 01 · Project overview
+## 1. What it does
 
-**ReturnPath helps a customer and merchant agree on a return resolution, then makes the resulting action inspectable.** A customer advocate interprets preferences; a merchant representative proposes an option from a trusted catalog. The customer accepts exact terms before execution. The agents cannot invent refund amounts, change merchant authority or confirm their own success.
+ReturnPath helps a customer get a return or refund resolved without repeating the same story to support.
 
-One server-rendered application provides a session-scoped **customer workspace** and a password-protected **operator workspace**. The playground supports different purchases and merchant-approved refund amounts, clarification, up to three rounds, expiring offers, immutable accepted agreements, and separately persisted simulated refund records. Configure the catalog in [config/resolutions.json](config/resolutions.json); it is snapshotted when a request starts. The initial catalog includes $24/$120 and $15/$65 choices—not just the original $30 example.
+A customer can write “the package was broken,” “damanged item,” or describe the problem in their own words. One AI agent helps explain what the customer wants. A second represents the merchant and offers only the options the merchant allows. If something is unclear, they ask a question. The customer reviews and accepts the exact terms.
 
-**Two paths are deliberately labeled:**
+**Why two agents?** The customer and merchant have different needs. Showing both sides makes it clear what was requested, what was offered and what was agreed.
 
-- **Resolution playground:** two model roles, configurable offers and agreement-bound **simulated payments**. It has no access to the connected financial executor. Use live models explicitly, or a clearly labeled deterministic offline baseline.
-- **Connected execution regression:** actual Gmail → model → verified customer contact → $30 Stripe TEST refund on a $100 payment → Gmail outcome → Slack. This fixed amount remains a safety/crash fixture. Variable negotiated agreements are **not yet connected to Stripe**.
+**Why separate agreement from payment?** A persuasive message is not permission to move money. Code checks the accepted terms, records the operation before sending it, and checks the payment provider afterward. After an interruption, it should find an existing refund rather than create another one.
 
-This is a single-merchant prototype, not a general marketplace. No voice, cross-case learning or self-modifying policy. The app is currently **local, not publicly deployed**. A guarded [Render deployment configuration](render.yaml) and [exact hosting steps](docs/HOSTING_RENDER.md) are prepared; account setup and paid-resource approval are pending.
+### What works today
 
-[Implementation status](IMPLEMENTATION_STATUS.md) · [Judge guide](JUDGE_GUIDE.md) · [Machine-readable submission](submission.json) · [Architecture](docs/ARCHITECTURE.md)
+- **Try a resolution:** customer and operator pages, natural-language conversations, different merchant-approved offers, saved agreements and simulated refunds. Offers come from [merchant settings](config/resolutions.json), not amounts invented by an agent.
+- **Real app demonstration:** Gmail intake and verification, a $30 Stripe TEST refund on a $100 payment, a customer email and a Slack update. [All three were checked in the same run](evidence/connected-ordinary-run.json).
 
-## 02 · External apps used
+**Still to finish:** connecting negotiated offers to Stripe, testing a crash during a real Stripe run, free hosting and the demo video. The negotiated-offer playground currently uses simulated payments. The fixed $30 example remains a repeatable test of duplicate-refund prevention.
 
-| App | Concrete job | Verification status |
-|---|---|---|
-| Gmail | Read customer request; send contact-verification and outcome emails | Actual intake and sends observed; operator confirmed receiving the outcome |
-| Stripe | Create/retrieve the controlled TEST payment and partial refund | Independent oracle observed exactly one $30 succeeded refund on the $100 TEST charge |
-| Slack | Post an actionable case update and retrieve it | Independent case-message readback passed; URL-format comparison fixed and regression-tested |
+## 2. External apps
 
-The model API and local warehouse/payment simulators **do not count** as external apps. Account authentication alone is not action verification. [Redacted same-run provider evidence](evidence/connected-ordinary-run.json) verifies the ordinary three-service run. The connected crash/restart experiment is still pending. The agent playground does not inherit the connected fixture's evidence.
+| App | Why we use it |
+|---|---|
+| Gmail | Customers can contact support by email and receive verification and refund updates. |
+| Stripe | Creates the TEST refund and provides records we can check independently. |
+| Slack | Gives the support operator a case update, supporting facts and the next action. |
 
-## 03 · Setup instructions
+These are the three connected apps. The model API and simulated warehouse do not count as additional apps. No real money is moved.
 
-Requires Python 3.12. Use the existing checkout and its locked `.venv`:
+## 3. Run it
+
+Requires Python 3.12. Setup uses a project-specific environment and locked dependencies so installations are repeatable.
 
 ```bash
 cd ~/testingxd
@@ -36,62 +38,50 @@ make init-config
 make playground
 ```
 
-Open **http://127.0.0.1:8001/playground**. Choose a demo purchase, describe your preference (for example, “I would prefer to keep it if compensation is reasonable”), review both agent outputs and accept exact terms. The default model mode is a **deterministic offline baseline**. Live mode accepts natural descriptions, typos and paraphrases; it is not restricted to example phrases. Conversation history is scoped to this request, so clarification answers retain context. Damage is a claim, not automatic evidence or authorization.
+Open **http://127.0.0.1:8001/playground**. The default uses a simple offline test substitute for the AI.
 
-For the actual two-model-role experience, configure the model API locally, keep `RP_MODE=connected-test`, and start:
+For real AI conversations, follow the [credentials checklist](docs/CREDENTIALS_CHECKLIST.md), set `RP_MODE=connected-test` in the private configuration, then run:
 
 ```bash
 RP_RESOLUTION_MODEL=live make playground
 ```
 
-This web-only command starts no financial worker. Open **http://127.0.0.1:8001/login**, sign in with your operator password, then visit **/resolutions** to inspect the agreement and execute/reconcile its simulated refund. Return-required offers need explicit operator-simulated warehouse acceptance. Customer sessions cannot call operator execution routes. Login changes the session; use a separate browser profile for simultaneous customer/operator views.
+Choose a purchase, describe the problem, answer any questions and accept an offer. For the operator view, open `/login`, then `/resolutions`. Use a separate browser profile to keep customer and operator sessions separate.
 
-Use [one credentials checklist](docs/CREDENTIALS_CHECKLIST.md) for Gmail, Slack, Stripe TEST and the model. Secrets stay outside the repository in `~/.config/returnpath`. Never paste them into chat or commit them. Browser consent belongs to the operator.
-
-For the original connected workflow:
+For the Gmail/Stripe/Slack demonstration, complete the same checklist, enable controlled TEST writes and run:
 
 ```bash
 make doctor
-# Only for a NEW isolated rehearsal, never an existing case:
-make connected-seed
+make connected-seed    # once for a NEW test case only
 make connected-dev
 ```
 
-An existing seeded case restarts with **only `make connected-dev`**. Send the controlled customer email with `order 4127` in its body, then explicitly confirm the emailed link on this Mac. Keep only one financial worker running. Stop with Ctrl+C. Do not run `connected-smoke` alongside a worker.
+Send an email from the configured customer mailbox with `order 4127` in the body, then confirm the emailed verification link. **For an existing case, restart with only `make connected-dev`. Never reseed it.** Stop with Ctrl+C.
 
-The playground uses separate `resolutions.sqlite` and `resolution-provider.sqlite` files. It cannot replace, reset or spend against the connected fixture. Public hosting and remote-customer OAuth/verification remain unimplemented; localhost is not a deployment link.
+Keep passwords, API keys and Gmail tokens outside the repository. We use SQLite to keep the local setup small and preserve records across restarts. A free hosted version needs separate persistent storage; no public deployment is running yet. Paid hosting is not being provisioned.
 
-## 04 · Reliability testing
+## 4. How we check reliability
 
 ```bash
-make lint
 make test
-make resolution-eval
-make eval
+make lint
 make demo
 make review-check
-make stripe-oracle        # read-only actual Stripe TEST verification
+make stripe-oracle    # independently reads the existing Stripe TEST refund
 make submission-check
 ```
 
-The suite checks immutable financial parameters, exact contact verification, single-worker ownership, complete provider pagination, bounded same-key retries, UNKNOWN handling and notification uncertainty. Real subprocess tests exercise worker death with surviving simulator records. The independent watchdog detects/alerts; **an operator restarts the worker**.
+- **77 tests passed:** [test report](evidence/offline-evaluation.md). Checks include customer access, changed or expired offers, repeated acceptance and repeated refund attempts.
+- **Local crash test passed:** [recorded result](evidence/local-demo.json). A process is killed after the simulated provider saves a refund, then restarted. The independent check finds one refund. This has not yet been repeated with Stripe.
+- **Real Stripe check passed:** one $30 refund on the $100 TEST payment, verified from provider records rather than the app's success label.
+- **Four language examples passed:** [actual model results](evidence/language-smoke.json), including typos and clarification replies. This is a small check, not proof that every conversation works.
 
-New resolution tests cover unauthorized agent offers, cross-customer access, CSRF, expired/superseded acceptance, immutable agreements, required warehouse evidence and replay against a separate simulated provider ledger. Two agents exchanging text is not itself evidence of safety.
+The watchdog detects and alerts; a person restarts the worker. Uncertain email delivery is not treated as proof that sending failed. Gmail changed our supplied Message-ID, so recovery from an uncertain send still needs work.
 
-- [Natural-language smoke](evidence/language-smoke.json) covers typo/paraphrase inputs and clarification follow-ups; one trial each, with no claim of exhaustive language coverage.
-- [Actual two-agent smoke results](evidence/resolution-live-evaluation.json): three live-model scenarios, one trial each; not a broad reliability benchmark.
-- [Actual offline test report](evidence/offline-evaluation.md) and [machine-readable results](evidence/offline-evaluation.json).
-- [Actual local process-crash trace](evidence/local-demo.json)—simulated providers, not connected crash evidence.
-- `make resolution-eval` runs three preference/clarification scenarios ten times with the deterministic baseline. It is **not** a stochastic reliability estimate.
-- `.venv/bin/python scripts/resolution_eval.py --live --trials 1` runs the same three synthetic scenarios with actual model calls. Costs API usage; no app-provider writes. Reports go to ignored `.runtime/` until reviewed for export. One successful trial per scenario is only a smoke test.
-- [Reliability brief](docs/RELIABILITY_BRIEF.md) and [provenance](docs/PROVENANCE.md) state scope and limitations.
+Missing evidence keeps `submission-check` blocked. See the [reliability notes](docs/RELIABILITY_BRIEF.md), [implementation status](IMPLEMENTATION_STATUS.md) and [submission manifest](submission.json) for details.
 
-`make stripe-oracle` must report one matching refund, aggregate `3000` cents and matching successful retrieval for the original case. Gmail did not preserve our supplied Message-ID; unknown-send correlation remains unverified and must not trigger a blind resend. Missing connected crash evidence, video or organizer access must keep `submission-check` **BLOCKED**. We do not claim exactly-once delivery, universal reliability or production security certification.
+## 5. Demo video
 
-## 05 · Demo video — maximum two minutes
+**Not recorded yet.** The final video will be no longer than two minutes and linked here. It will show the customer request, agent responses, the three apps and the failure/recovery test, with simulated parts clearly labeled. [Recording plan](docs/DEMO_SCRIPT.md).
 
-**Not recorded yet. No video URL is available.** [Recording plan and status](docs/DEMO_SCRIPT.md).
-
-The final recording must show the user task, all three real apps, actual model contribution, exact accepted/approved terms, provider evidence and the deliberate crash/restart. Label simulated parts and any cuts. Add the genuine video link here, plus matching transcript and captions; do not substitute an invented transcript or a simulator recording for connected evidence.
-
-Private source access and event eligibility still require organizer confirmation. The repository remains private; no judge credentials or hidden grading instructions are included.
+[Build history and AI assistance](docs/PROVENANCE.md) · [Reviewer guide](JUDGE_GUIDE.md)
