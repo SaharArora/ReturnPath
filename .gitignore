@@ -1,0 +1,68 @@
+# Secrets and authentication material
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+client_secret*.json
+*.pem
+*.key
+.secrets/
+credentials/
+tokens/
+
+# Local runtime and unreviewed customer/provider data
+.runtime/
+.runtime-*/
+runtime/
+var/
+logs/
+recordings/
+transcripts/
+artifacts/raw/
+reports/raw/
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Python/tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# OS/editor local files
+.DS_Store
+.idea/
+.vscode/
+
+# Do not commit raw generated evidence automatically.
+# Reviewed synthetic/redacted snapshots can go under evidence/.
+
+# ReturnPath v3 local/secret artifacts
+.venv-auth/
+secrets/
+.credentials/
+*.env
+.env*
+!.env.example
+*.token.json
+gmail-client.json
+gmail-token.json
+credentials.json
+token.json
+raw_runs/
+.runtime/
+.DS_Store
