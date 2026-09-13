@@ -8,6 +8,8 @@ Start with [judge guide](JUDGE_GUIDE.md), [actual evaluation](evidence/offline-e
 
 ## Local startup
 
+To view setup instructions before creating your operator login, run `make web` and open `http://127.0.0.1:8000/login`. The checklist is also served at `/credentials`, without requiring a GitHub browser login. This setup-only screen has no case data or mutation routes. Stop that web process before starting `make dev` after configuration.
+
 ```bash
 cd ~/testingxd
 make setup

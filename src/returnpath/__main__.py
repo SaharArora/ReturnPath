@@ -56,7 +56,12 @@ def main():
             if c.get("RP_MODE", "local") == "local":
                 from .isolation import install
                 install()
-            uvicorn.run(create_app(c), host="127.0.0.1", port=int(c.get("RP_WEB_PORT", "8000")), access_log=False)
+            if c.get('RP_OPERATOR_SESSION_SECRET') and c.get('RP_OPERATOR_PASSWORD_HASH'):
+                app = create_app(c)
+            else:
+                from .preview import create_setup_app
+                app = create_setup_app()
+            uvicorn.run(app, host="127.0.0.1", port=int(c.get("RP_WEB_PORT", "8000")), access_log=False)
         elif command == "connected-seed":
             from .runtime import paths
             from .storage import connect
