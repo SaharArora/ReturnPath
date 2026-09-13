@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "project": "ReturnPath",
+  "repository": "SaharArora/testingxd",
+  "status": "PARTIAL_IMPLEMENTATION",
+  "required_services": [
+    "gmail",
+    "stripe",
+    "slack"
+  ],
+  "services": {
+    "gmail": {
+      "status": "BLOCKED",
+      "observed_actions": [],
+      "run_id": null
+    },
+    "stripe": {
+      "status": "BLOCKED",
+      "observed_actions": [],
+      "run_id": null
+    },
+    "slack": {
+      "status": "BLOCKED",
+      "observed_actions": [],
+      "run_id": null
+    }
+  },
+  "verified_required_app_count": 0,
+  "fingerprints": {
+    "implementation": "3890a5587090e141b43bc88651c1833aa169485ca3be4d5de06ed49bab4125cf",
+    "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
+    "prompt_schema": "5f39d0e7cae7d16d415d809633314f965732c74bfb44cf9c0308ab058eb64213"
+  },
+  "connected_run": null,
+  "offline_report": "evidence/offline-evaluation.json",
+  "evidence_index": [
+    "evidence/offline-evaluation.json",
+    "evidence/offline-evaluation.md",
+    "evidence/local-demo.json"
+  ],
+  "artifacts": {
+    "video": null,
+    "transcript": null,
+    "captions": null,
+    "reliability": "docs/RELIABILITY_BRIEF.md",
+    "provenance": "docs/PROVENANCE.md"
+  },
+  "reproduction_commands": [
+    "make setup",
+    "make test",
+    "make eval",
+    "make review-check",
+    "make submission-check"
+  ],
+  "organizer_access_confirmed": false,
+  "limitations": [
+    "No connected service actions or live model evaluation executed",
+    "No genuine recording or transcript",
+    "Partial fault-suite coverage; see implementation status",
+    "Local single-host prototype; not production certified"
+  ]
+}
