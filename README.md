@@ -116,3 +116,7 @@ Gmail changed our supplied Message-ID, so recovery from an uncertain send still 
 Missing evidence keeps `submission-check` blocked. See the [reliability notes](docs/RELIABILITY_BRIEF.md), [implementation status](IMPLEMENTATION_STATUS.md) and [submission manifest](submission.json) for details.
 
 [Build history and AI assistance](docs/PROVENANCE.md) · [Reviewer guide](JUDGE_GUIDE.md)
+
+## 5. Demo
+
+[Watch the demo](https://youtu.be/_smB1ylupvw)
