@@ -34,3 +34,5 @@ Final selected evaluation: 66 tests, 0 failures, 0 errors, 0 skipped (generated 
 ## Preview accessibility fix
 
 The previous preview was unreachable because no server remained running; the private GitHub checklist link returned 404 in the signed-out in-app browser. Added a loopback setup-only page when operator config is absent, plus locally served checklist and authorization instructions. Verified both rendered in the actual in-app browser. Protected app routes remain inaccessible before operator setup. `make web` is the setup preview command; operator creates their password privately with `make init-config`.
+
+Operator password setup completed by user. Activated protected local web/worker/watchdog; created initial local fixture only because no case records existed. Login form verified in browser. Local simulation reached RESOLVED; no connected services were invoked. Documentation routes now remain accessible after setup.

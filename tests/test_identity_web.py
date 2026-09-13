@@ -60,6 +60,8 @@ def test_F29_operator_auth_and_scoped_confirmation(tmp_path):
                 'RP_OPERATOR_PASSWORD_HASH': PasswordHasher().hash('synthetic-password')})
     app = create_app(c)
     client = TestClient(app)
+    assert client.get('/credentials').status_code == 200
+    assert client.get('/authorization').status_code == 200
     assert client.get('/').status_code == 401
     assert client.get('/cases/ret').status_code == 401
     assert client.post('/login', data={'password': 'synthetic-password'}).status_code == 403

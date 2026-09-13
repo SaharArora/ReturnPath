@@ -17,6 +17,11 @@ def create_app(c):
     if len(c.get("RP_OPERATOR_SESSION_SECRET")) < 32:
         raise ValueError("Operator session secret too short; run make init-config")
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+    # Keep nonsecret setup documentation available after operator setup.
+    from .preview import create_setup_app
+    for route in create_setup_app().routes:
+        if route.path in {'/credentials', '/authorization'}:
+            app.router.routes.append(route)
     app.add_middleware(SessionMiddleware, secret_key=c.get("RP_OPERATOR_SESSION_SECRET"),
                        same_site="strict", max_age=3600)
     db_path, _ = paths(c)
