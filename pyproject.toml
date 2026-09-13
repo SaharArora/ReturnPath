@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "returnpath"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["setuptools==80.9.0", "wheel", "fastapi", "uvicorn", "pydantic", "python-dotenv", "argon2-cffi", "google-api-python-client", "google-auth-oauthlib", "httpx", "stripe", "pytest", "ruff", "itsdangerous", "python-multipart"]
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.ruff]
+line-length = 110
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
