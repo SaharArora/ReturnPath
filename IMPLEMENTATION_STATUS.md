@@ -27,4 +27,6 @@ For connected use, intentionally set connected-test/write enablement in the priv
 
 No actual Gmail intake/send, Stripe TEST refund/retrieval, Slack handoff, live-model response, connected crash run or genuine recording was available. These are hard blockers to CONNECTED_WORKFLOW_VERIFIED and SUBMISSION_READY. Full v3 acceptance remains unclaimed: named tests cover declared cases, not every fault combination; per-state daily caps are not account-wide caps; live Retry-After/notification correlation behavior needs actual contract validation; watchdog is on the same host/storage. No voice, production/public deployment or automatic process restart.
 
-Private visibility: verified through GitHub API. Push: pending final checkpoint verification (updated after actual push). Organizer private-source access/advance-work eligibility: not verified. No synthetic transcript or self-awarded score was created.
+Private visibility: verified through GitHub API. Push: succeeded to existing origin/main through `39e5f38` (implementation `02ae815`); this documentation checkpoint follows. Organizer private-source access/advance-work eligibility: not verified. No synthetic transcript or self-awarded score was created.
+
+Final selected evaluation: 65 tests, 0 failures, 0 errors, 0 skipped (generated from the selected report). Lint, local demo, offline review consistency and real-process UI smoke passed. submission-check, live-model-eval and connected-smoke returned BLOCKED/nonzero as expected.
