@@ -1,6 +1,6 @@
 {
-  "run_id": "ec315683-7f82-4e16-b598-1b1e7024fb2c",
-  "timestamp": "2026-09-13T21:45:30.218202+00:00",
+  "run_id": "9fa185f3-2d85-4c8e-9da5-d1e6123257af",
+  "timestamp": "2026-09-13T22:04:35.353638+00:00",
   "mode": "local",
   "adapters": [
     "persistent fake payment",
@@ -8,47 +8,47 @@
     "persistent fake Slack",
     "stub model"
   ],
-  "commit": "593fa7b83c001cd14d3ced4f0d04765db9f79638",
+  "commit": "a640442eb5f2d73abe5cc9d67ed43a6cf3247ae8",
   "dirty": true,
   "fingerprints": {
-    "implementation": "a9fd5e68fda56040667c3acc4fc5dca69c969159d6083b77627a86127ec1308b",
+    "implementation": "2a6554ebfc623838c073d48966c668470399593b6b2ebf131ca08302b5880a87",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
-    "prompt_schema": "15e3584144306b32dc1ed5c7861311bf1864cca4e308fb89f6ac23b77a6dd8a4"
+    "prompt_schema": "bd03f727183d2125ca5aa4dd64490ed8179446e58ec242b7549e7220cfd755b2"
   },
-  "tests": 75,
+  "tests": 77,
   "failed": 0,
   "errors": 0,
   "skipped": 0,
-  "elapsed_seconds": 5.014,
+  "elapsed_seconds": 5.5809999999999995,
   "nodes": [
     {
       "node": "tests.test_adapters::test_F16_stripe_later_page",
-      "seconds": 0.009,
+      "seconds": 0.008,
       "status": "PASSED"
     },
     {
       "node": "tests.test_adapters::test_F28_write_gate",
-      "seconds": 0.001,
+      "seconds": 0.0,
       "status": "PASSED"
     },
     {
       "node": "tests.test_adapters::test_F28_live_key_rejected",
-      "seconds": 0.017,
+      "seconds": 0.015,
       "status": "PASSED"
     },
     {
       "node": "tests.test_adapters::test_gmail_complete_pagination",
-      "seconds": 0.001,
+      "seconds": 0.0,
       "status": "PASSED"
     },
     {
       "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[False]",
-      "seconds": 0.129,
+      "seconds": 0.144,
       "status": "PASSED"
     },
     {
       "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[True]",
-      "seconds": 0.027,
+      "seconds": 0.024,
       "status": "PASSED"
     },
     {
@@ -58,62 +58,62 @@
     },
     {
       "node": "tests.test_core::test_F09_F10_warehouse[None]",
-      "seconds": 0.006,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F09_F10_warehouse[0]",
-      "seconds": 0.005,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F11_unavailable_listing",
-      "seconds": 0.014,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F12_F13_non_success[pending]",
-      "seconds": 0.007,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F12_F13_non_success[failed]",
       "seconds": 0.008,
       "status": "PASSED"
     },
     {
+      "node": "tests.test_core::test_F09_F10_warehouse[0]",
+      "seconds": 0.006,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_core::test_F11_unavailable_listing",
+      "seconds": 0.018,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_core::test_F12_F13_non_success[pending]",
+      "seconds": 0.008,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_core::test_F12_F13_non_success[failed]",
+      "seconds": 0.009,
+      "status": "PASSED"
+    },
+    {
       "node": "tests.test_core::test_F12_F13_non_success[canceled]",
-      "seconds": 0.007,
+      "seconds": 0.011,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F12_F13_non_success[requires_action]",
-      "seconds": 0.007,
+      "seconds": 0.009,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F14_corrupt_cached_summary",
-      "seconds": 0.007,
+      "seconds": 0.01,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_oracle_detects_duplicate_F17",
-      "seconds": 0.007,
+      "seconds": 0.009,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F18_F19_bounded_unknown_same_key",
-      "seconds": 0.017,
+      "seconds": 0.024,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F24_ambiguous_mail_no_blind_retry",
-      "seconds": 0.007,
+      "seconds": 0.01,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F25_slack_outage",
-      "seconds": 0.006,
+      "seconds": 0.01,
       "status": "PASSED"
     },
     {
@@ -123,12 +123,12 @@
     },
     {
       "node": "tests.test_core::test_journal_immutable",
-      "seconds": 0.007,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_fixed_integer_approval[True]",
-      "seconds": 0.0,
+      "seconds": 0.001,
       "status": "PASSED"
     },
     {
@@ -158,7 +158,7 @@
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[missing_app]",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
@@ -168,17 +168,17 @@
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[inflated]",
-      "seconds": 0.005,
+      "seconds": 0.003,
       "status": "PASSED"
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[stale]",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[broken_path]",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
@@ -193,7 +193,7 @@
     },
     {
       "node": "tests.test_faults::test_F07_provider_commits_lost_response",
-      "seconds": 0.007,
+      "seconds": 0.009,
       "status": "PASSED"
     },
     {
@@ -203,27 +203,27 @@
     },
     {
       "node": "tests.test_faults::test_F27_journal_commit_failure_no_post",
-      "seconds": 0.009,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_faults::test_F18_elapsed_horizon_no_post",
-      "seconds": 0.006,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_faults::test_unknown_mail_absence_not_proof",
-      "seconds": 0.014,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_identity_web::test_F04_F20_contact_scope_expiry_replay",
       "seconds": 0.009,
       "status": "PASSED"
     },
     {
+      "node": "tests.test_faults::test_unknown_mail_absence_not_proof",
+      "seconds": 0.017,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_identity_web::test_F04_F20_contact_scope_expiry_replay",
+      "seconds": 0.01,
+      "status": "PASSED"
+    },
+    {
       "node": "tests.test_identity_web::test_F21_wrong_ambiguous_claimed_email",
-      "seconds": 0.007,
+      "seconds": 0.008,
       "status": "PASSED"
     },
     {
@@ -238,47 +238,47 @@
     },
     {
       "node": "tests.test_identity_web::test_F29_operator_auth_and_scoped_confirmation",
-      "seconds": 0.18,
+      "seconds": 0.194,
       "status": "PASSED"
     },
     {
       "node": "tests.test_identity_web::test_mime_wrapped_email_uses_same_grounded_text_for_model_and_validation",
-      "seconds": 0.018,
+      "seconds": 0.02,
       "status": "PASSED"
     },
     {
       "node": "tests.test_identity_web::test_interpretation_failure_log_does_not_expose_exception_body",
-      "seconds": 0.006,
+      "seconds": 0.008,
       "status": "PASSED"
     },
     {
       "node": "tests.test_preview::test_missing_config_has_useful_preview_without_exposing_app",
-      "seconds": 0.018,
+      "seconds": 0.014,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F05_two_actual_workers",
-      "seconds": 0.939,
+      "seconds": 1.009,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F06_F08_sigkill_restart_duplicate_contact[before-post]",
-      "seconds": 1.121,
+      "seconds": 1.453,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F06_F08_sigkill_restart_duplicate_contact[after-provider-success]",
-      "seconds": 1.163,
+      "seconds": 1.107,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F26_watchdog_survives_worker",
-      "seconds": 0.823,
+      "seconds": 0.843,
       "status": "PASSED"
     },
     {
       "node": "tests.test_resolution::test_agreement_replay_and_provider_reconciliation",
-      "seconds": 0.014,
+      "seconds": 0.016,
       "status": "PASSED"
     },
     {
@@ -293,27 +293,37 @@
     },
     {
       "node": "tests.test_resolution::test_untrusted_agent_cannot_create_offer_or_payment",
-      "seconds": 0.004,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_resolution::test_catalog_snapshot_not_changed_by_later_configuration",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
       "node": "tests.test_resolution::test_slack_url_readback_and_unchanged_update_suppression",
-      "seconds": 0.027,
+      "seconds": 0.028,
       "status": "PASSED"
     },
     {
       "node": "tests.test_resolution::test_customer_ui_isolation_csrf_and_operator_boundary",
-      "seconds": 0.091,
+      "seconds": 0.132,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_followup_context_and_revision_are_preserved",
+      "seconds": 0.005,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_hosted_app_rejects_provider_secrets_and_hides_connected_routes",
+      "seconds": 0.061,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_slow_observation_cannot_authorize",
-      "seconds": 0.005,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
@@ -323,12 +333,12 @@
     },
     {
       "node": "tests.test_review_fixes::test_model_retry_budget_durable",
-      "seconds": 0.005,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_F19_provider_sticky_error_replayed",
-      "seconds": 0.006,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
@@ -343,17 +353,17 @@
     },
     {
       "node": "tests.test_review_fixes::test_daily_reservation_bound",
-      "seconds": 0.005,
+      "seconds": 0.013,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_http_warehouse_requires_secret",
-      "seconds": 0.057,
+      "seconds": 0.049,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_retry_after_is_durable_lower_bound",
-      "seconds": 0.008,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
@@ -363,7 +373,7 @@
     },
     {
       "node": "tests.test_setup::test_private_file",
-      "seconds": 0.001,
+      "seconds": 0.002,
       "status": "PASSED"
     },
     {
@@ -393,7 +403,7 @@
     },
     {
       "node": "tests.test_setup::test_init_config_preserves_values_and_hashes_password",
-      "seconds": 0.081,
+      "seconds": 0.101,
       "status": "PASSED"
     }
   ],

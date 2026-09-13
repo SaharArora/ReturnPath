@@ -11,7 +11,7 @@ One server-rendered application provides a session-scoped **customer workspace**
 - **Resolution playground:** two model roles, configurable offers and agreement-bound **simulated payments**. It has no access to the connected financial executor. Use live models explicitly, or a clearly labeled deterministic offline baseline.
 - **Connected execution regression:** actual Gmail → model → verified customer contact → $30 Stripe TEST refund on a $100 payment → Gmail outcome → Slack. This fixed amount remains a safety/crash fixture. Variable negotiated agreements are **not yet connected to Stripe**.
 
-This is a single-merchant prototype, not a general marketplace. No voice, cross-case learning or self-modifying policy. The app is currently **local, not publicly deployed**.
+This is a single-merchant prototype, not a general marketplace. No voice, cross-case learning or self-modifying policy. The app is currently **local, not publicly deployed**. A guarded [Render deployment configuration](render.yaml) and [exact hosting steps](docs/HOSTING_RENDER.md) are prepared; account setup and paid-resource approval are pending.
 
 [Implementation status](IMPLEMENTATION_STATUS.md) · [Judge guide](JUDGE_GUIDE.md) · [Machine-readable submission](submission.json) · [Architecture](docs/ARCHITECTURE.md)
 
@@ -36,7 +36,7 @@ make init-config
 make playground
 ```
 
-Open **http://127.0.0.1:8001/playground**. Choose a demo purchase, describe your preference (for example, “I would prefer to keep it if compensation is reasonable”), review both agent outputs and accept exact terms. The default model mode is a **deterministic offline baseline**.
+Open **http://127.0.0.1:8001/playground**. Choose a demo purchase, describe your preference (for example, “I would prefer to keep it if compensation is reasonable”), review both agent outputs and accept exact terms. The default model mode is a **deterministic offline baseline**. Live mode accepts natural descriptions, typos and paraphrases; it is not restricted to example phrases. Conversation history is scoped to this request, so clarification answers retain context. Damage is a claim, not automatic evidence or authorization.
 
 For the actual two-model-role experience, configure the model API locally, keep `RP_MODE=connected-test`, and start:
 
@@ -78,6 +78,7 @@ The suite checks immutable financial parameters, exact contact verification, sin
 
 New resolution tests cover unauthorized agent offers, cross-customer access, CSRF, expired/superseded acceptance, immutable agreements, required warehouse evidence and replay against a separate simulated provider ledger. Two agents exchanging text is not itself evidence of safety.
 
+- [Natural-language smoke](evidence/language-smoke.json) covers typo/paraphrase inputs and clarification follow-ups; one trial each, with no claim of exhaustive language coverage.
 - [Actual two-agent smoke results](evidence/resolution-live-evaluation.json): three live-model scenarios, one trial each; not a broad reliability benchmark.
 - [Actual offline test report](evidence/offline-evaluation.md) and [machine-readable results](evidence/offline-evaluation.json).
 - [Actual local process-crash trace](evidence/local-demo.json)—simulated providers, not connected crash evidence.

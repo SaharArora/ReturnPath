@@ -1,3 +1,9 @@
+## Hosting and natural-language checkpoint
+
+User authorized hosting preparation; paid Render provisioning awaits budget/account confirmation. Added isolated hosted app factory, HTTPS cookies, exact host checks, financial/messaging credential rejection, no connected routes, persistent-disk blueprint and setup guide. No hosted URL exists yet.
+
+Resolution prompt revision v2 accepts ordinary language and typos; bounded conversation history now supports short clarification replies. Old requests cannot silently change prompt revision. The deterministic stub remains a labeled offline control. Variable agreement-to-Stripe execution remains unfinished; this checkpoint does not claim that connection.
+
 # Current checkpoint — expanded resolution workspace
 
 This checkpoint supersedes earlier connectivity statements below.
@@ -65,3 +71,5 @@ User-authorized scope revision: build two bounded agents, merchant-configured re
 3. Add customer playground and operator inspection with scoped access, truthful simulator/live-model labels.
 4. Run safety tests and a repeatable negotiation benchmark; consolidate judge requirements in README.
 5. Deployment and actual expanded connected execution remain gates until verified; no invented video or connected benchmark results.
+
+Hosting/language verification: 77 offline tests and lint passed; 4/4 live-language smoke scenarios passed, including two clarification follow-ups. No hosted service provisioned. Restarted only the playground process on port 8001; existing Stripe records unchanged.

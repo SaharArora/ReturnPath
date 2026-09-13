@@ -23,13 +23,14 @@ def create_app(c):
         if route.path in {'/credentials', '/authorization'}:
             app.router.routes.append(route)
     app.add_middleware(SessionMiddleware, secret_key=c.get("RP_OPERATOR_SESSION_SECRET"),
-                       same_site="strict", max_age=3600)
+                       same_site="strict", max_age=3600, https_only=c.get("RP_HOSTED") == "true")
     db_path, _ = paths(c)
     attempts = {}
 
     @app.middleware("http")
     async def security(request, call_next):
-        if request.headers.get("host", "").split(":")[0] not in {"localhost", "127.0.0.1", "testserver"}:
+        allowed_hosts = {"localhost", "127.0.0.1", "testserver"} if c.get("RP_HOSTED") != "true" else {c.get("RP_PUBLIC_HOST")}
+        if request.headers.get("host", "").split(":")[0] not in allowed_hosts:
             return HTMLResponse("Invalid host", status_code=400)
         response = await call_next(request)
         response.headers["Referrer-Policy"] = "no-referrer"

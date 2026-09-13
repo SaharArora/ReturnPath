@@ -1,0 +1,31 @@
+# Paid resources: review Render's quote before clicking Apply.
+services:
+  - type: web
+    name: returnpath-playground
+    runtime: python
+    plan: starter
+    buildCommand: pip install --require-hashes -r requirements.lock && pip install --no-deps --no-build-isolation -e .
+    startCommand: uvicorn returnpath.hosted:build --factory --host 0.0.0.0 --port $PORT --workers 1 --no-access-log
+    healthCheckPath: /health
+    autoDeployTrigger: "off"
+    disk:
+      name: returnpath-state
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.11
+      - key: RP_STATE_DIR
+        value: /var/data/returnpath
+      - key: RP_ALLOW_CONNECTED_WRITES
+        value: "false"
+      - key: RP_RESOLUTION_MODEL
+        value: live
+      - key: RP_MODEL
+        value: gpt-4o-mini
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: RP_OPERATOR_PASSWORD
+        sync: false
+      - key: RP_OPERATOR_SESSION_SECRET
+        generateValue: true

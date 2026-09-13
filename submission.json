@@ -38,9 +38,9 @@
   },
   "verified_required_app_count": 3,
   "fingerprints": {
-    "implementation": "a9fd5e68fda56040667c3acc4fc5dca69c969159d6083b77627a86127ec1308b",
+    "implementation": "2a6554ebfc623838c073d48966c668470399593b6b2ebf131ca08302b5880a87",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
-    "prompt_schema": "15e3584144306b32dc1ed5c7861311bf1864cca4e308fb89f6ac23b77a6dd8a4"
+    "prompt_schema": "bd03f727183d2125ca5aa4dd64490ed8179446e58ec242b7549e7220cfd755b2"
   },
   "connected_run": {
     "run_id": "connected-b77cc543ffe6c223",
@@ -71,7 +71,8 @@
     "evidence/local-demo.json",
     "evidence/connected-ordinary-run.json",
     "evidence/resolution-live-evaluation.json",
-    "evidence/resolution-offline-evaluation.json"
+    "evidence/resolution-offline-evaluation.json",
+    "evidence/language-smoke.json"
   ],
   "artifacts": {
     "video": null,
@@ -104,6 +105,8 @@
       "stub"
     ],
     "catalog": "config/resolutions.json",
-    "deployment_url": null
+    "deployment_url": null,
+    "hosting": "Render blueprint prepared; not deployed",
+    "prompt_revision": "resolution-v2"
   }
 }

@@ -1,0 +1,38 @@
+{
+  "mode": "LIVE_MODEL",
+  "model": "gpt-4o-mini",
+  "revision": "resolution-v2",
+  "scope": "Four synthetic language smoke scenarios; one trial each, not broad reliability evidence",
+  "scenarios": 4,
+  "passed": 4,
+  "results": [
+    {
+      "scenario": "misspelled_package",
+      "turns": 2,
+      "first_state": "CLARIFY",
+      "selected": "keep",
+      "passed": true
+    },
+    {
+      "scenario": "misspelled_damage",
+      "turns": 2,
+      "first_state": "CLARIFY",
+      "selected": "return",
+      "passed": true
+    },
+    {
+      "scenario": "paraphrase_keep",
+      "turns": 1,
+      "first_state": "OFFERED",
+      "selected": "keep",
+      "passed": true
+    },
+    {
+      "scenario": "paraphrase_return",
+      "turns": 1,
+      "first_state": "OFFERED",
+      "selected": "return",
+      "passed": true
+    }
+  ]
+}

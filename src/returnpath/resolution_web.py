@@ -60,7 +60,7 @@ def register(app, c, db_path, page, auth, csrf):
         content = heading() + '<h2>' + html.escape(terms['order']['product']) + '</h2><p>Status: <strong>' + row['state'] + '</strong> · Round ' + str(row['rounds']) + '/3</p>'
         for entry in db.execute('SELECT * FROM exchanges WHERE resolution=? ORDER BY id', (rid,)):
             data = json.loads(entry['data'])
-            content += '<article><h3>' + ('Your advocate' if entry['role'] == 'advocate' else 'Merchant representative') + '</h3><p>' + html.escape(data['explanation']) + '</p><small>Round ' + str(entry['round']) + ' · ' + html.escape(data['action']) + '</small></article>'
+            content += '<article><h3>' + {'customer': 'You', 'advocate': 'Your advocate', 'merchant': 'Merchant representative'}[entry['role']] + '</h3><p>' + html.escape(data['explanation']) + '</p><small>Round ' + str(entry['round']) + ' · ' + html.escape(data['action']) + '</small></article>'
         offer = db.execute('SELECT * FROM offers WHERE resolution=? ORDER BY rowid DESC LIMIT 1', (rid,)).fetchone()
         if offer:
             chosen = json.loads(offer['terms'])['selected']

@@ -140,3 +140,32 @@ def test_customer_ui_isolation_csrf_and_operator_boundary(tmp_path):
         agreed = customer.post(url + '/accept', data={'csrf': csrf, 'offer': offer})
         assert 'Your agreement is recorded' in agreed.text
         assert customer.post('/resolutions/' + url.split('/')[-1] + '/settle', data={'csrf': csrf}).status_code == 401
+
+
+def test_followup_context_and_revision_are_preserved(tmp_path):
+    c, db, rid = setup(tmp_path)
+    seen = []
+    def chooser(c, role, context):
+        seen.append(context.copy())
+        return r.Choice(action='CLARIFY', offer_id=None, explanation='Is the item damaged or only the box?')
+    r.negotiate(db, c, rid, 'customer', 'the packge was smashed', chooser=chooser)
+    r.negotiate(db, c, rid, 'customer', 'only the box', chooser=chooser)
+    assert seen[1]['history'][0]['data']['explanation'] == 'the packge was smashed'
+    assert seen[1]['history'][1]['data']['explanation'] == 'Is the item damaged or only the box?'
+
+
+def test_hosted_app_rejects_provider_secrets_and_hides_connected_routes(tmp_path):
+    from fastapi.testclient import TestClient
+    from returnpath.hosted import build
+    env = {'RP_OPERATOR_PASSWORD': 'synthetic-long-password', 'RP_OPERATOR_SESSION_SECRET': 'x'*48,
+           'RP_PUBLIC_HOST': 'demo.example', 'RP_STATE_DIR': str(tmp_path), 'RP_RESOLUTION_MODEL': 'stub'}
+    with pytest.raises(ValueError):
+        build({**env, 'STRIPE_SECRET_KEY': 'sk_test_synthetic'})
+    with TestClient(build(env), base_url='https://demo.example') as client:
+        assert client.get('/health').json()['payments'] == 'simulated'
+        assert client.get('/playground').status_code == 200
+        assert client.get('/credentials').status_code == 404
+        assert client.get('/warehouse/ret').status_code == 404
+        assert client.get('/verify/anything').status_code == 404
+        assert client.get('/playground', headers={'host': 'evil.example'}).status_code == 400
+        assert 'secure' in client.get('/login').headers['set-cookie'].lower()
