@@ -62,7 +62,8 @@ class Connected:
     def refund(self, op, params):
         self.c.writes()
         trusted = self.db.execute("SELECT * FROM cases WHERE id=?", (op["case_id"],)).fetchone()
-        if not trusted or params != {"charge": trusted["charge"], "amount": 3000, "currency": "usd", "policy": trusted["policy"]}:
+        amount = self.approval(dict(trusted))[1] if trusted and hasattr(self, "approval") else 3000
+        if not trusted or params != {"charge": trusted["charge"], "amount": amount, "currency": "usd", "policy": trusted["policy"]}:
             raise ValueError("Refund parameters not approved")
         if not self.db.execute("SELECT 1 FROM operations WHERE id=? AND first_attempt IS NOT NULL AND attempts<=3", (op["id"],)).fetchone():
             raise ValueError("Missing durable attempt")
@@ -70,11 +71,11 @@ class Connected:
         reserve(self.db, 'refund_posts', 3)
         import stripe
         try:
-            refund = self.stripe.v1.refunds.create({"charge": params["charge"], "amount": 3000,
+            refund = self.stripe.v1.refunds.create({"charge": params["charge"], "amount": amount,
                          "metadata": {"operation": op["id"], "case_id": op["case_id"]}}, {"idempotency_key": op["idem"]})
         except (stripe.AuthenticationError, stripe.PermissionError, stripe.InvalidRequestError) as exc:
             raise ValueError('Stripe definite request/configuration error: ' + type(exc).__name__) from None
-        if refund.charge != trusted["charge"] or refund.amount != 3000 or refund.currency != "usd":
+        if refund.charge != trusted["charge"] or refund.amount != amount or refund.currency != "usd":
             raise ValueError("Refund response conflict")
         return {"id": refund.id}
 
@@ -136,6 +137,13 @@ class Connected:
             existing = self.db.execute("SELECT * FROM contacts WHERE channel='gmail' AND event=?", (item["id"],)).fetchone()
             if existing and existing["verified"]:
                 continue
+            if existing and existing['case_id']:
+                issue(self.db, self, existing['id'], self.c.get('RP_BASE_URL', 'http://127.0.0.1:8000'))
+                continue
+            if existing and self.db.execute("SELECT 1 FROM sqlite_master WHERE name='model_attempts'").fetchone():
+                budget = self.db.execute('SELECT count,next_at FROM model_attempts WHERE contact=?', (existing['id'],)).fetchone()
+                if budget and (budget['count'] >= 3 or time.time() < budget['next_at']):
+                    continue
             msg, data = self.read_message(item["id"])
             sender = email.utils.parseaddr(msg["From"])[1]
             if 'SENT' in data.get('labelIds', []) or sender != self.c.get("RP_CUSTOMER_EMAIL"):

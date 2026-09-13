@@ -1,3 +1,15 @@
+## Core bridge and recording checkpoint
+
+Accepted offers now connect to the existing Stripe TEST worker through a separate immutable agreement journal. Fresh mailbox confirmation and required warehouse acceptance gate payment; original $30 case untouched. Original and agreement journals share one worker ownership lock. Operator and customer pages show connected status, dynamic notification amounts and inspection links. Independent `make agreement-oracle` added.
+
+Prepared the user's already accepted order 7201: $120 TEST payment, $120 approved full-return refund. Verification email submitted. No new refund had been attempted at preparation; mailbox confirmation and simulated warehouse acceptance were pending. Do not call this connected refund completion or the required original $30 crash experiment.
+
+Added a README-linked SVG workflow visual and proposed two-minute narration (not a transcript). Visual was rendered and inspected locally. Browser local-file navigation was blocked, so no local-file browser inspection is claimed.
+
+## Core connection implementation plan
+
+Preserve existing completed case and baseline constraints. Add a separate agreement execution journal using the existing worker/reconciliation/notification machinery; copy immutable accepted terms into it. Require a fresh trusted-address confirmation, explicit TEST payment preparation and operator-simulated return receipt when needed. Enforce unique merchant order binding, one worker lock across both journals, complete refund reads and fixed operation parameters. Verify fake/SDK failure cases before connected execution.
+
 ## README reliability clarification
 
 Removed hosting and demo-status prose from README at user request; their truthful status remains in the submission manifest and implementation records. Added sourced product-scope comparison with Poke/Instinct, grounding sources, save-before-write, bounded retry, provider reconciliation, uncertainty and separate watchdog/restart explanations. Explicitly distinguished measured local behavior from untested distributed scaling and incomplete offer-to-Stripe integration. No new reliability or competitor-performance result is claimed.

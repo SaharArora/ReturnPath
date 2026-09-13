@@ -12,6 +12,11 @@ from . import resolution as r
 
 def register(app, c, db_path, page, auth, csrf):
     path = db_path.parent / 'resolutions.sqlite'
+    payment_path = db_path.parent / 'agreement-app.sqlite'
+
+    def connected_allowed():
+        return c.get('RP_MODE') == 'connected-test' and c.get('RP_ALLOW_CONNECTED_WRITES') == 'true' and c.get('RP_HOSTED') != 'true'
+
 
     def session(request):
         if not request.session.get('customer'):
@@ -23,11 +28,11 @@ def register(app, c, db_path, page, auth, csrf):
     def hidden(request):
         return '<input type="hidden" name="csrf" value="' + request.session['csrf'] + '">'
 
-    def heading():
+    def heading(payment_mode="SIMULATED PAYMENTS"):
         live = c.get('RP_RESOLUTION_MODEL', 'stub') == 'live'
         return ('<nav><a href="/playground">Customer workspace</a> · <a href="/resolutions">Operator workspace</a> · <a href="/">Connected cases</a></nav>'
-                '<p class="badge">SIMULATED PAYMENTS · ' + ('LIVE MODEL' if live else 'DETERMINISTIC OFFLINE BASELINE') +
-                '</p><p>Explore a resolution with one demo merchant. No real purchase or refund is created here.</p>')
+                '<p class="badge">' + payment_mode + ' · ' + ('LIVE MODEL' if live else 'DETERMINISTIC OFFLINE BASELINE') +
+                '</p><p>Explore a resolution with one demo merchant. Payments are simulated unless this case is explicitly connected to Stripe TEST.</p>')
 
     @app.get('/playground')
     def home(request: Request):
@@ -57,7 +62,12 @@ def register(app, c, db_path, page, auth, csrf):
     def render(db, row, request, operator=False):
         rid = row['id']
         terms = json.loads(row['terms'])
-        content = heading() + '<h2>' + html.escape(terms['order']['product']) + '</h2><p>Status: <strong>' + row['state'] + '</strong> · Round ' + str(row['rounds']) + '/3</p>'
+        linked = None
+        if payment_path.exists():
+            from .agreement_bridge import journal
+            with closing(journal(payment_path)) as payments:
+                linked = payments.execute('SELECT c.* FROM cases c JOIN agreement_bindings b ON b.case_id=c.id WHERE b.resolution_id=?', (rid,)).fetchone()
+        content = heading('STRIPE TEST' if linked else 'SIMULATED PAYMENTS') + '<h2>' + html.escape(terms['order']['product']) + '</h2><p>Status: <strong>' + row['state'] + '</strong> · Round ' + str(row['rounds']) + '/3</p>'
         for entry in db.execute('SELECT * FROM exchanges WHERE resolution=? ORDER BY id', (rid,)):
             data = json.loads(entry['data'])
             content += '<article><h3>' + {'customer': 'You', 'advocate': 'Your advocate', 'merchant': 'Merchant representative'}[entry['role']] + '</h3><p>' + html.escape(data['explanation']) + '</p><small>Round ' + str(entry['round']) + ' · ' + html.escape(data['action']) + '</small></article>'
@@ -78,9 +88,19 @@ def register(app, c, db_path, page, auth, csrf):
             agreement = db.execute('SELECT * FROM agreements WHERE resolution=?', (rid,)).fetchone()
             if agreement:
                 content += '<article><h3>Durable accepted agreement</h3><pre>' + html.escape(agreement['terms']) + '</pre></article>'
+                if connected_allowed():
+                    content += '<article><h3>Connect this agreement to Stripe TEST</h3><p>Creates a fresh TEST payment for the purchase price and sends a verification link to the configured customer. The worker can refund only the accepted amount after confirmation.</p><form method="post" action="/resolutions/' + rid + '/connect">' + hidden(request) + '<button>Prepare Stripe TEST case / send verification</button></form></article>'
                 content += '<form method="post" action="/resolutions/' + rid + '/settle">' + hidden(request) + '<label><input type="checkbox" name="receipt" value="yes">Simulate warehouse acceptance, if required</label><button>Execute / reconcile simulated refund</button></form>'
-        elif row['state'] == 'AGREED':
+        elif row['state'] == 'AGREED' and not linked:
             content += '<p>Your agreement is recorded. The demo operator can execute it in the simulated payment ledger.</p>'
+        if payment_path.exists():
+            from .agreement_bridge import journal
+            with closing(journal(payment_path)) as payments:
+                linked = payments.execute('SELECT c.* FROM cases c JOIN agreement_bindings b ON b.case_id=c.id WHERE b.resolution_id=?', (rid,)).fetchone()
+                if linked:
+                    content += '<article><h3>STRIPE TEST execution</h3><p>Approved $' + f"{linked['amount']/100:.2f}" + ' · ' + html.escape(linked['summary']) + '</p><p>Identity must be confirmed through the customer email before payment.</p></article>'
+        if linked and operator:
+            content += '<p><a href="/agreements/cases/' + linked['id'] + '">Inspect payment evidence / record simulated warehouse acceptance</a></p>'
         return page(content)
 
     @app.get('/playground/{rid}')
@@ -151,3 +171,73 @@ def register(app, c, db_path, page, auth, csrf):
             except ValueError:
                 raise HTTPException(409, 'Accepted agreement and required warehouse evidence are necessary') from None
         return RedirectResponse('/resolutions/' + rid, 303)
+
+    @app.post('/resolutions/{rid}/connect')
+    async def connect_agreement(request: Request, rid: str):
+        auth(request)
+        data = await request.form()
+        csrf(request, str(data.get('csrf', '')))
+        if not connected_allowed():
+            raise HTTPException(403, 'Connected TEST writes are not enabled')
+        from .agreement_bridge import journal, prepare, AgreementConnected, send_verification
+        from starlette.concurrency import run_in_threadpool
+        def work():
+            with closing(r.connect(path)) as resolutions, closing(journal(payment_path)) as payments:
+                cid = prepare(c, resolutions, payments, rid)
+                provider = AgreementConnected(c, payments)
+                send_verification(payments, provider, cid)
+        try:
+            await run_in_threadpool(work)
+        except Exception as exc:
+            print('Agreement preparation pending: ' + type(exc).__name__, flush=True)
+            return page('<p>Preparation or verification is pending. No automatic replacement payment will be created. Inspect the agreement execution journal.</p>')
+        return RedirectResponse('/resolutions/' + rid, 303)
+
+    @app.get('/agreements/verify/{token}')
+    def agreement_verify_form(request: Request, token: str):
+        from .agreement_bridge import journal
+        from .identity import challenge
+        with closing(journal(payment_path)) as payments:
+            row = challenge(payments, token)
+            if not row:
+                return page('<p>Request unavailable or expired.</p>')
+            case = payments.execute('SELECT amount FROM cases WHERE id=?', (row['case_id'],)).fetchone()
+        request.session['csrf'] = secrets.token_urlsafe(24)
+        return page('<h2>Confirm accepted refund</h2><p>Order ' + html.escape(row['order_ref']) + ' · approved $' + f"{case['amount']/100:.2f}" + ' USD in Stripe TEST. Confirm control of the trusted customer mailbox for this request.</p><form method="post">' + hidden(request) + '<button>Confirm this request</button></form>')
+
+    @app.post('/agreements/verify/{token}')
+    async def agreement_verify(request: Request, token: str):
+        data = await request.form()
+        csrf(request, str(data.get('csrf', '')))
+        from .agreement_bridge import journal
+        from .identity import confirm
+        with closing(journal(payment_path)) as payments:
+            confirm(payments, token)
+        return page('<p>Request processed. The worker will check the accepted terms and provider records.</p>')
+
+    @app.get('/agreements/cases/{cid}')
+    def agreement_case(request: Request, cid: str):
+        auth(request)
+        from .agreement_bridge import journal
+        with closing(journal(payment_path)) as payments:
+            row = payments.execute('SELECT * FROM cases WHERE id=?', (cid,)).fetchone()
+            if not row:
+                raise HTTPException(404)
+            content = '<h2>Agreement execution · STRIPE TEST</h2><p>Order ' + html.escape(row['order_ref']) + ' · approved $' + f"{row['amount']/100:.2f}" + '</p><p>' + html.escape(row['summary']) + '</p>'
+            if not row['warehouse']:
+                content += '<form method="post">' + hidden(request) + '<button>Record simulated warehouse acceptance</button></form>'
+            for entry in payments.execute('SELECT kind,data FROM audit WHERE case_id=? ORDER BY id DESC LIMIT 30', (cid,)):
+                content += '<pre>' + html.escape(str(dict(entry))) + '</pre>'
+        return page(content)
+
+    @app.post('/agreements/cases/{cid}')
+    async def agreement_receipt(request: Request, cid: str):
+        auth(request)
+        data = await request.form()
+        csrf(request, str(data.get('csrf', '')))
+        if not connected_allowed():
+            raise HTTPException(403)
+        from .agreement_bridge import journal, record_receipt
+        with closing(journal(payment_path)) as payments:
+            record_receipt(payments, cid)
+        return RedirectResponse('/agreements/cases/' + cid, 303)

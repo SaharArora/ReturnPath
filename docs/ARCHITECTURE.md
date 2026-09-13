@@ -16,3 +16,10 @@ Python 3.12, locked pip dependencies, FastAPI server-rendered pages, SQLite jour
 `resolution.py` snapshots a validated merchant catalog, runs a customer advocate then a merchant representative with separate fixed prompts, validates catalog offer IDs, and stores expiring offers. An explicit customer-session acceptance transaction writes immutable agreement terms. The operator-only simulated executor uses the agreement ID in a separate provider ledger; replay reconciles the same entry. `resolution_web.py` provides session-scoped customer routes and authenticated operator inspection/execution. No customer request or model output supplies a financial amount.
 
 The playground is isolated from the fixed Stripe TEST workflow. Variable agreements do not yet authorize connected refunds. A RUNNING round left by process death stays visibly unresolved; no unbounded retry or automatic restart is claimed. Reflection, public deployment and an expanded connected benchmark are not implemented.
+
+
+## Accepted agreement to Stripe TEST
+
+`agreement_bridge.py` copies accepted terms to a unique per-order binding before a TEST payment is created. An uncertain creation is held for inspection rather than replaced. A separate agreement journal permits the merchant-approved amount while the existing baseline database stays untouched. The customer receives a fresh contact-scoped confirmation; return-required offers also need operator-simulated receipt. `runtime.run` processes both journals within its original worker lock. The shared planner defaults to the fixed baseline amounts; the agreement adapter supplies validated immutable authority for dynamic cases. Complete refund reconciliation, attempt budgets, UNKNOWN handling and notification rules remain shared.
+
+The current real agreement preparation is not a completed refund or a connected crash result. Required contact and warehouse actions remain visible.

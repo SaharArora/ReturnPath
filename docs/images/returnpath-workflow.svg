@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">ReturnPath: from a customer request to a checked result</title>
+<desc id="desc">General assistants such as Poke cover many everyday tasks. ReturnPath focuses on return resolution: a customer advocate talks with a merchant agent, the customer accepts exact permitted terms, and guarded code executes and verifies the refund. The fixed Stripe workflow is verified; the new agreement connection still needs a connected run. Recovery is checked after an operator restarts the worker.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#397365"/></marker></defs>
+<rect width="1200" height="760" fill="#f5f5ef"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#173c34">
+<text x="48" y="58" font-size="18" letter-spacing="3">RETURNPATH</text>
+<text x="48" y="104" font-size="34" font-weight="bold">From a request to a checked result</text>
+<rect x="48" y="132" width="1104" height="98" rx="12" fill="#e7ece5"/>
+<text x="70" y="165" font-size="19" font-weight="bold">Everyday assistance → return resolution</text>
+<text x="70" y="193" font-size="17">Poke: everyday assistance through messaging. ReturnPath: resolve a return with a merchant.</text>
+<text x="70" y="215" font-size="15">We expose the parties, permitted terms, acceptance and evidence. Other products' internal safeguards are not assessed.</text>
+<rect x="48" y="268" width="235" height="120" rx="12" fill="white" stroke="#bed0c4"/>
+<text x="68" y="299" font-size="20" font-weight="bold">1 · Customer advocate</text>
+<text x="68" y="328" font-size="16">“It arrived damaged.”</text>
+<text x="68" y="351" font-size="16">Clarifies what matters.</text>
+<text x="68" y="374" font-size="14">Natural language, not keywords.</text>
+<rect x="322" y="268" width="235" height="120" rx="12" fill="white" stroke="#bed0c4"/>
+<text x="342" y="299" font-size="20" font-weight="bold">2 · Merchant agent</text>
+<text x="342" y="328" font-size="16">Chooses permitted offers.</text>
+<text x="342" y="351" font-size="16">Amounts come from policy.</text>
+<text x="342" y="374" font-size="14">Authority: saved merchant terms.</text>
+<rect x="596" y="268" width="235" height="120" rx="12" fill="white" stroke="#bed0c4"/>
+<text x="616" y="299" font-size="20" font-weight="bold">3 · Customer decision</text>
+<text x="616" y="328" font-size="16">Accepts exact terms.</text>
+<text x="616" y="351" font-size="16">Confirms mailbox control.</text>
+<text x="616" y="374" font-size="14">An agent cannot accept for them.</text>
+<rect x="870" y="268" width="282" height="120" rx="12" fill="#173c34"/>
+<g fill="white"><text x="890" y="299" font-size="20" font-weight="bold">4 · Guarded execution</text>
+<text x="890" y="328" font-size="16">Save operation before payment.</text>
+<text x="890" y="351" font-size="16">Use fixed accepted parameters.</text>
+<text x="890" y="374" font-size="14">The model has no refund tool.</text></g>
+<g stroke="#397365" stroke-width="2" marker-end="url(#arrow)"><path d="M283 328H314"/><path d="M557 328H588"/><path d="M831 328H862"/><path d="M1011 388V425"/></g>
+<rect x="48" y="434" width="510" height="140" rx="12" fill="#e7ece5"/>
+<text x="70" y="466" font-size="21" font-weight="bold">What if the worker dies after payment?</text>
+<text x="70" y="497" font-size="17">Watchdog alerts. A person restarts the worker.</text>
+<text x="70" y="525" font-size="17">Recovery checks for an existing refund before retrying.</text>
+<text x="70" y="553" font-size="15">No automatic process restart is claimed.</text>
+<rect x="596" y="434" width="556" height="140" rx="12" fill="white" stroke="#bed0c4"/>
+<text x="618" y="466" font-size="21" font-weight="bold">5 · Check and communicate</text>
+<text x="618" y="497" font-size="17">Stripe TEST: retrieve actual refund records.</text>
+<text x="618" y="525" font-size="17">Gmail: customer update. Slack: actionable case update.</text>
+<text x="618" y="553" font-size="15">Success is supported by provider evidence, not a model assertion.</text>
+<text x="48" y="625" font-size="18" font-weight="bold">Evidence boundaries</text>
+<text x="48" y="654" font-size="16">Verified: original Gmail + Stripe TEST + Slack run; local simulated crash/restart; live language smoke tests.</text>
+<text x="48" y="680" font-size="16">Still to verify: new agreement-to-Stripe run and connected crash/restart. Warehouse evidence is simulated.</text>
+<text x="48" y="721" font-size="13" fill="#527268">Scope reference: poke.com/docs · This is a workflow explanation, not a transcript or a benchmark against another product.</text>
+</g></svg>

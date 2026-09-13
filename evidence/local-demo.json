@@ -1,42 +1,42 @@
 {
   "mode": "local",
   "recording": null,
-  "run_id": "demo-a7c6a02f-f5c4-4eb4-8d9a-524cbf38b1ed",
-  "timestamp": "2026-09-13T22:04:37.094712+00:00",
-  "commit": "a640442eb5f2d73abe5cc9d67ed43a6cf3247ae8",
+  "run_id": "demo-7052cd63-0712-44dc-9e07-638a0544e437",
+  "timestamp": "2026-09-13T22:43:43.843136+00:00",
+  "commit": "e30e7c7de78a3082e7e4a9a42cd5aa24f57ee593",
   "dirty": true,
   "fingerprints": {
-    "implementation": "2a6554ebfc623838c073d48966c668470399593b6b2ebf131ca08302b5880a87",
+    "implementation": "e8bc752553fa014348ffb6decc5e4093720e57e0f8874792895ccbbe6e200bfc",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
     "prompt_schema": "bd03f727183d2125ca5aa4dd64490ed8179446e58ec242b7549e7220cfd755b2"
   },
   "trace": [
     {
-      "seconds": 0.343,
+      "seconds": 0.29,
       "event": "LOCAL SIMULATORS: $100 charge / $30 approved; fixture-preverified contact. No live model."
     },
     {
-      "seconds": 0.62,
+      "seconds": 0.558,
       "event": "Independent simulator database shows one $30 refund; worker stopped before completion write."
     },
     {
-      "seconds": 0.623,
+      "seconds": 0.562,
       "event": "Worker killed with SIGKILL. Watchdog remains independently running."
     },
     {
-      "seconds": 0.624,
+      "seconds": 0.563,
       "event": "Second synthetic contact persisted without resetting operation or provider database."
     },
     {
-      "seconds": 0.935,
+      "seconds": 0.563,
       "event": "Independent watchdog submitted simulator stale-worker alert; no automatic restart."
     },
     {
-      "seconds": 1.618,
+      "seconds": 1.138,
       "event": "Harness explicitly restarted worker; existing refund retrieved and notification submitted."
     },
     {
-      "seconds": 1.619,
+      "seconds": 1.139,
       "event": "Independent final oracle PASS: 1 refund, 3000 cents aggregate, 1 simulator outcome mail."
     }
   ],

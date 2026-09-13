@@ -38,7 +38,7 @@
   },
   "verified_required_app_count": 3,
   "fingerprints": {
-    "implementation": "2a6554ebfc623838c073d48966c668470399593b6b2ebf131ca08302b5880a87",
+    "implementation": "e8bc752553fa014348ffb6decc5e4093720e57e0f8874792895ccbbe6e200bfc",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
     "prompt_schema": "bd03f727183d2125ca5aa4dd64490ed8179446e58ec242b7549e7220cfd755b2"
   },
@@ -91,15 +91,15 @@
   "organizer_access_confirmed": false,
   "limitations": [
     "Connected ordinary three-service run verified; connected crash/restart not yet performed",
-    "Expanded two-agent agreements use simulated payments, not Stripe",
     "Gmail supplied Message-ID not preserved; ambiguous-send recovery remains unverified",
     "No public deployment, genuine video or transcript",
-    "Live two-agent evaluation is only a three-scenario smoke test"
+    "Live two-agent evaluation is only a three-scenario smoke test",
+    "New accepted-agreement Stripe refund awaits customer verification and return evidence; not yet independently verified"
   ],
   "provider_evidence": "evidence/connected-ordinary-run.json",
   "resolution_playground": {
     "status": "IMPLEMENTED_LOCAL",
-    "payment_mode": "SIMULATED",
+    "payment_mode": "SIMULATED_DEFAULT_OR_EXPLICIT_STRIPE_TEST",
     "model_modes": [
       "live",
       "stub"
@@ -107,6 +107,7 @@
     "catalog": "config/resolutions.json",
     "deployment_url": null,
     "hosting": "Free-only hosting requested; paid Render option not selected; not deployed",
-    "prompt_revision": "resolution-v2"
+    "prompt_revision": "resolution-v2",
+    "connected_bridge": "IMPLEMENTED; prepared TEST payment, refund verification pending"
   }
 }

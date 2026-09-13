@@ -37,14 +37,17 @@ CREATE TABLE IF NOT EXISTS alerts (id TEXT PRIMARY KEY, at REAL NOT NULL, state 
 """
 
 
-def connect(path):
+def connect(path, *, agreement=False):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     db = sqlite3.connect(path, timeout=5)
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys=ON")
     db.execute("PRAGMA synchronous=FULL")
-    db.executescript(SCHEMA)
+    schema = SCHEMA
+    if agreement:
+        schema = schema.replace("CHECK(original=10000)", "CHECK(original>0 AND original<=100000)").replace("CHECK(amount=3000)", "CHECK(amount>0 AND amount<=original)")
+    db.executescript(schema)
     path.chmod(0o600)
     return db
 

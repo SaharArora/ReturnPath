@@ -93,7 +93,17 @@ def tick(db, provider, now=None, fault_path=None, clock=None):
                  "charge": charge, "refunds": refunds, "fetched_at": observation_started,
                  "expected_charge": case["charge"], "approved": case["amount"]}
         now = clock()
-        decision = decide(facts, authorized, op, case["hold"], now)
+        authority = {}
+        if hasattr(provider, 'approval'):
+            try:
+                original, approved = provider.approval(case)
+                authority = {'original': original, 'approved': approved}
+            except Exception:
+                with db:
+                    db.execute("UPDATE cases SET hold=1,summary='NEEDS_REVIEW' WHERE id=?", (cid,))
+                audit(db, cid, "AGREEMENT_AUTHORITY_CONFLICT", {}, now)
+                continue
+        decision = decide(facts, authorized, op, case["hold"], now, **authority)
         audit(db, cid, decision.reason, {"action": decision.action}, now)
         if decision.action == "REVIEW":
             with db:
@@ -149,7 +159,7 @@ def tick(db, provider, now=None, fault_path=None, clock=None):
 
 def notify(db, provider, case, op, now, fault_path):
     key = "refund-status:" + op["id"]
-    body = "Payment provider reports the approved $30.00 USD refund succeeded. Bank posting time may vary."
+    body = f"Payment provider reports the approved ${case['amount'] / 100:.2f} USD refund succeeded. Bank posting time may vary."
     with db:
         db.execute("INSERT OR IGNORE INTO notifications(id,case_id,recipient,body) VALUES(?,?,?,?)",
                    (key, case["id"], case["customer"], body))
@@ -182,7 +192,7 @@ def notify(db, provider, case, op, now, fault_path):
                 return
     try:
         provider.slack(case["id"], {"operation": op["id"], "refund": op["provider_id"],
-                       "verified_fact": "Stripe/simulator reports $30 succeeded", "notification": "SUBMITTED",
+                       "verified_fact": f"Payment provider reports ${case['amount'] / 100:.2f} USD succeeded", "notification": "SUBMITTED",
                        "remaining": "No automatic financial action", "dashboard": "/cases/" + case["id"]})
     except Exception:
         audit(db, case["id"], "SLACK_UNKNOWN", {}, now)
@@ -194,7 +204,7 @@ def notify(db, provider, case, op, now, fault_path):
 def handoff(db, provider, case_id, operation, reason, now):
     try:
         provider.slack(case_id, {"reason": reason, "operation": operation["id"] if operation else None,
-                       "verified_facts": "Merchant approved 3000 USD cents; provider success not assumed",
+                       "verified_facts": "Approval is fixed in trusted case records; provider success not assumed",
                        "unknown_or_conflict": reason, "action": "Inspect evidence and provider state; do not create a replacement refund",
                        "dashboard": "/cases/" + case_id})
     except Exception:

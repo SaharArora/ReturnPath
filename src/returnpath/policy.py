@@ -8,7 +8,7 @@ class Decision:
     reason: str
 
 
-def decide(facts, authorized, operation, hold, now):
+def decide(facts, authorized, operation, hold, now, *, original=10000, approved=3000):
     if hold:
         return Decision("REVIEW", "REVIEW_HOLD")
     if not authorized:
@@ -23,10 +23,10 @@ def decide(facts, authorized, operation, hold, now):
         return Decision("WAIT", "PAYMENT_UNKNOWN")
     charge = facts["charge"]
     if (charge.get("livemode") is not False or charge.get("currency") != "usd"
-        or charge.get("amount") != 10000 or charge.get("paid") is not True
+        or charge.get("amount") != original or charge.get("paid") is not True
         or charge.get("captured") is not True or charge.get("disputed") is not False
         or charge.get("type") != "card" or charge.get("id") != facts.get("expected_charge")
-        or type(facts.get("approved")) is not int or facts["approved"] != 3000):
+        or type(facts.get("approved")) is not int or facts["approved"] != approved or type(approved) is not int or not 0 < approved <= original <= 100000):
         return Decision("REVIEW", "UNSUPPORTED_OR_CONFLICTING_FACTS")
     if facts["refunds"]:
         return Decision("REVIEW", "UNEXPECTED_REFUND")

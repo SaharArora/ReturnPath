@@ -24,8 +24,17 @@ def main():
             if c.get("RP_MODE", "local") == "connected-test":
                 c.writes()
             app, _ = paths(c)
+            if "--agreement" in sys.argv:
+                app = app.parent / "agreement-app.sqlite"
             Path(str(app) + "." + boundary).touch(exist_ok=False)
             print("Armed " + boundary + "; worker SIGSTOPs there. Operator/harness must SIGKILL then restart without seed.")
+        elif command == "agreement-oracle":
+            import json
+            from .agreement_bridge import readback
+            from .runtime import paths
+            result = readback(c, paths(c)[0].parent / 'agreement-app.sqlite')
+            print(json.dumps(result, indent=2))
+            return int(not result['passed'])
         elif command == "stripe-oracle":
             from .runtime import paths
             from .storage import connect
