@@ -29,3 +29,24 @@ def test_doctor_missing_is_blocked(service):
 def test_local_network_isolation():
     with socket.socket() as s, pytest.raises(PermissionError):
         s.connect(('8.8.8.8', 443))
+
+
+def test_init_config_preserves_values_and_hashes_password(tmp_path, monkeypatch):
+    from returnpath.config import init_config
+    from argon2 import PasswordHasher
+    import getpass
+    path = tmp_path / 'private/config.env'
+    path.parent.mkdir()
+    path.write_text('RP_MODEL=saved-model\nRP_OPERATOR_SESSION_SECRET=\nRP_OPERATOR_PASSWORD_HASH=\n')
+    answers = iter(['synthetic-long-password', 'synthetic-long-password'])
+    monkeypatch.setattr(getpass, 'getpass', lambda prompt: next(answers))
+    c = Config({'RP_ENV_FILE': str(path)})
+    init_config(c)
+    saved = Config({'RP_ENV_FILE': str(path)})
+    assert saved.get('RP_MODEL') == 'saved-model'
+    assert PasswordHasher().verify(saved.get('RP_OPERATOR_PASSWORD_HASH'), 'synthetic-long-password')
+    assert 'synthetic-long-password' not in path.read_text()
+    before = path.read_text()
+    init_config(saved)  # No second prompt; iterator would fail if asked.
+    assert path.read_text() == before
+    assert path.parent.stat().st_mode & 0o777 == 0o700

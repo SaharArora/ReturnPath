@@ -1,0 +1,21 @@
+name: Offline verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    env:
+      RP_ENV_FILE: /dev/null
+      RP_MODE: local
+      RP_ALLOW_CONNECTED_WRITES: 'false'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: make setup
+      - run: make lint
+      - run: make eval
+      - run: make demo
+      - run: make review-check

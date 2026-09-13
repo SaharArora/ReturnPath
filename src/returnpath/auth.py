@@ -29,7 +29,9 @@ def gmail(c, consent=False):
             credentials.refresh(Request())
     if not credentials.valid or not credentials.has_scopes(SCOPES):
         raise ValueError("Gmail grant invalid or missing scopes; reauthorize locally")
-    api = build("gmail", "v1", credentials=credentials, cache_discovery=False)
+    import httplib2
+    from google_auth_httplib2 import AuthorizedHttp
+    api = build("gmail", "v1", http=AuthorizedHttp(credentials, http=httplib2.Http(timeout=10)), cache_discovery=False)
     profile = api.users().getProfile(userId="me").execute(num_retries=0)
     if profile["emailAddress"].lower() != c.get("RP_SUPPORT_EMAIL").lower():
         raise ValueError("Authorized Gmail mailbox does not match RP_SUPPORT_EMAIL")
@@ -57,7 +59,7 @@ def stripe_client(c):
     if not c.get("STRIPE_SECRET_KEY").startswith(("sk_test_", "rk_test_")):
         raise ValueError("Only Stripe TEST keys are supported")
     return stripe.StripeClient(c.get("STRIPE_SECRET_KEY"), max_network_retries=0,
-        http_client=stripe.HTTPXClient(timeout=10))
+        http_client=stripe.HTTPXClient(timeout=10, allow_sync_methods=True))
 
 
 def doctor(c, service):
