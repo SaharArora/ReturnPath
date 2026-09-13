@@ -1,42 +1,42 @@
 {
   "mode": "local",
   "recording": null,
-  "run_id": "demo-6b4f12eb-f70f-4ab8-a21c-60d044fe3445",
-  "timestamp": "2026-09-13T16:08:40.788206+00:00",
-  "commit": "aea1607d8f01a1fb63b9e998aa36d5e1a304f147",
+  "run_id": "demo-47b16d97-c3a6-404f-beeb-62306e5da7e7",
+  "timestamp": "2026-09-13T21:45:31.428329+00:00",
+  "commit": "593fa7b83c001cd14d3ced4f0d04765db9f79638",
   "dirty": true,
   "fingerprints": {
-    "implementation": "70658791534308394f30ff0762046aca5387ae5e7624b8b30e52ab0d379a786d",
+    "implementation": "a9fd5e68fda56040667c3acc4fc5dca69c969159d6083b77627a86127ec1308b",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
-    "prompt_schema": "5f39d0e7cae7d16d415d809633314f965732c74bfb44cf9c0308ab058eb64213"
+    "prompt_schema": "15e3584144306b32dc1ed5c7861311bf1864cca4e308fb89f6ac23b77a6dd8a4"
   },
   "trace": [
     {
-      "seconds": 0.285,
+      "seconds": 0.291,
       "event": "LOCAL SIMULATORS: $100 charge / $30 approved; fixture-preverified contact. No live model."
     },
     {
-      "seconds": 0.526,
+      "seconds": 0.528,
       "event": "Independent simulator database shows one $30 refund; worker stopped before completion write."
     },
     {
-      "seconds": 0.53,
+      "seconds": 0.532,
       "event": "Worker killed with SIGKILL. Watchdog remains independently running."
     },
     {
-      "seconds": 0.531,
+      "seconds": 0.532,
       "event": "Second synthetic contact persisted without resetting operation or provider database."
     },
     {
-      "seconds": 0.531,
+      "seconds": 0.533,
       "event": "Independent watchdog submitted simulator stale-worker alert; no automatic restart."
     },
     {
-      "seconds": 1.111,
+      "seconds": 1.11,
       "event": "Harness explicitly restarted worker; existing refund retrieved and notification submitted."
     },
     {
-      "seconds": 1.112,
+      "seconds": 1.111,
       "event": "Independent final oracle PASS: 1 refund, 3000 cents aggregate, 1 simulator outcome mail."
     }
   ],

@@ -27,14 +27,14 @@ report = {'run_id': str(uuid.uuid4()), 'timestamp': datetime.datetime.now(dateti
                      'status': 'FAILED' if c.find('failure') is not None or c.find('error') is not None else 'SKIPPED' if c.find('skipped') is not None else 'PASSED'} for c in cases],
           'connected_workflow': 'NOT_RUN', 'live_model': 'NOT_RUN',
           'limitations': ['Test counts are not exhaustive scenario-family coverage or a proof.',
-                          'No connected provider effects or genuine video recorded.']}
+                          'This offline evaluation issues no connected provider effects; see separate connected evidence.']}
 output = root / 'evidence'
 output.mkdir(exist_ok=True)
 (output / 'offline-evaluation.json').write_text(json.dumps(report, indent=2) + '\n')
 (output / 'offline-evaluation.md').write_text('# Actual offline evaluation\n\nRun `' + report['run_id'] + '`; mode LOCAL SIMULATORS.\n\n'
     + str(report['tests']) + ' tests; ' + str(report['failed']) + ' failures; ' + str(report['errors']) + ' errors; '
     + str(report['skipped']) + ' skipped. These are test-node counts, not a recovery success percentage.\n\n'
-    + 'See [machine-readable results](offline-evaluation.json) for exact nodes, durations and fingerprints. Connected workflow and live model: NOT_RUN.\n')
+    + 'See [machine-readable results](offline-evaluation.json) for exact nodes, durations and fingerprints. Connected workflow and live model: NOT_RUN in this offline evaluator; see separate connected and resolution reports.\n')
 manifest = json.loads((root / 'submission.json').read_text())
 manifest['fingerprints'] = report['fingerprints']
 (root / 'submission.json').write_text(json.dumps(manifest, indent=2) + '\n')

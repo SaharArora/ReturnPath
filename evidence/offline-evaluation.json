@@ -1,6 +1,6 @@
 {
-  "run_id": "10a716eb-dc26-4dc0-94ae-aceb98854b10",
-  "timestamp": "2026-09-13T16:08:39.583250+00:00",
+  "run_id": "ec315683-7f82-4e16-b598-1b1e7024fb2c",
+  "timestamp": "2026-09-13T21:45:30.218202+00:00",
   "mode": "local",
   "adapters": [
     "persistent fake payment",
@@ -8,67 +8,67 @@
     "persistent fake Slack",
     "stub model"
   ],
-  "commit": "aea1607d8f01a1fb63b9e998aa36d5e1a304f147",
+  "commit": "593fa7b83c001cd14d3ced4f0d04765db9f79638",
   "dirty": true,
   "fingerprints": {
-    "implementation": "70658791534308394f30ff0762046aca5387ae5e7624b8b30e52ab0d379a786d",
+    "implementation": "a9fd5e68fda56040667c3acc4fc5dca69c969159d6083b77627a86127ec1308b",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
-    "prompt_schema": "5f39d0e7cae7d16d415d809633314f965732c74bfb44cf9c0308ab058eb64213"
+    "prompt_schema": "15e3584144306b32dc1ed5c7861311bf1864cca4e308fb89f6ac23b77a6dd8a4"
   },
-  "tests": 66,
+  "tests": 75,
   "failed": 0,
   "errors": 0,
   "skipped": 0,
-  "elapsed_seconds": 4.454,
+  "elapsed_seconds": 5.014,
   "nodes": [
     {
       "node": "tests.test_adapters::test_F16_stripe_later_page",
-      "seconds": 0.01,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_adapters::test_F28_write_gate",
-      "seconds": 0.0,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_adapters::test_F28_live_key_rejected",
-      "seconds": 0.011,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_adapters::test_gmail_complete_pagination",
-      "seconds": 0.0,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[False]",
-      "seconds": 0.115,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[True]",
-      "seconds": 0.029,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F01_F02_F03_baseline_duplicate_contacts",
       "seconds": 0.009,
       "status": "PASSED"
     },
     {
+      "node": "tests.test_adapters::test_F28_write_gate",
+      "seconds": 0.001,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_adapters::test_F28_live_key_rejected",
+      "seconds": 0.017,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_adapters::test_gmail_complete_pagination",
+      "seconds": 0.001,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[False]",
+      "seconds": 0.129,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_adapters::test_F11_F16_actual_sdk_pagination[True]",
+      "seconds": 0.027,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_core::test_F01_F02_F03_baseline_duplicate_contacts",
+      "seconds": 0.011,
+      "status": "PASSED"
+    },
+    {
       "node": "tests.test_core::test_F09_F10_warehouse[None]",
-      "seconds": 0.007,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F09_F10_warehouse[0]",
-      "seconds": 0.008,
+      "seconds": 0.005,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F11_unavailable_listing",
-      "seconds": 0.017,
+      "seconds": 0.014,
       "status": "PASSED"
     },
     {
@@ -78,52 +78,52 @@
     },
     {
       "node": "tests.test_core::test_F12_F13_non_success[failed]",
-      "seconds": 0.011,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_core::test_F12_F13_non_success[canceled]",
       "seconds": 0.008,
       "status": "PASSED"
     },
     {
+      "node": "tests.test_core::test_F12_F13_non_success[canceled]",
+      "seconds": 0.007,
+      "status": "PASSED"
+    },
+    {
       "node": "tests.test_core::test_F12_F13_non_success[requires_action]",
-      "seconds": 0.009,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F14_corrupt_cached_summary",
-      "seconds": 0.012,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_oracle_detects_duplicate_F17",
-      "seconds": 0.019,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F18_F19_bounded_unknown_same_key",
-      "seconds": 0.018,
+      "seconds": 0.017,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F24_ambiguous_mail_no_blind_retry",
-      "seconds": 0.01,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F25_slack_outage",
-      "seconds": 0.007,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_F30_hold_late_success",
-      "seconds": 0.007,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_core::test_journal_immutable",
-      "seconds": 0.006,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
@@ -153,7 +153,7 @@
     },
     {
       "node": "tests.test_evidence::test_missing_connected_evidence_rejected",
-      "seconds": 0.048,
+      "seconds": 0.018,
       "status": "PASSED"
     },
     {
@@ -163,12 +163,12 @@
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[mode]",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[inflated]",
-      "seconds": 0.003,
+      "seconds": 0.005,
       "status": "PASSED"
     },
     {
@@ -183,12 +183,12 @@
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[duplicate]",
-      "seconds": 0.003,
+      "seconds": 0.005,
       "status": "PASSED"
     },
     {
       "node": "tests.test_evidence::test_submission_negative_cases[video]",
-      "seconds": 0.003,
+      "seconds": 0.004,
       "status": "PASSED"
     },
     {
@@ -198,32 +198,32 @@
     },
     {
       "node": "tests.test_faults::test_F15_unassigned_refund",
-      "seconds": 0.01,
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
       "node": "tests.test_faults::test_F27_journal_commit_failure_no_post",
-      "seconds": 0.005,
+      "seconds": 0.009,
       "status": "PASSED"
     },
     {
       "node": "tests.test_faults::test_F18_elapsed_horizon_no_post",
-      "seconds": 0.01,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_faults::test_unknown_mail_absence_not_proof",
-      "seconds": 0.016,
-      "status": "PASSED"
-    },
-    {
-      "node": "tests.test_identity_web::test_F04_F20_contact_scope_expiry_replay",
       "seconds": 0.006,
       "status": "PASSED"
     },
     {
-      "node": "tests.test_identity_web::test_F21_wrong_ambiguous_claimed_email",
+      "node": "tests.test_faults::test_unknown_mail_absence_not_proof",
+      "seconds": 0.014,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_identity_web::test_F04_F20_contact_scope_expiry_replay",
       "seconds": 0.009,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_identity_web::test_F21_wrong_ambiguous_claimed_email",
+      "seconds": 0.007,
       "status": "PASSED"
     },
     {
@@ -233,42 +233,87 @@
     },
     {
       "node": "tests.test_identity_web::test_F23_model_outage_no_binding",
-      "seconds": 0.006,
+      "seconds": 0.008,
       "status": "PASSED"
     },
     {
       "node": "tests.test_identity_web::test_F29_operator_auth_and_scoped_confirmation",
-      "seconds": 0.142,
+      "seconds": 0.18,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_identity_web::test_mime_wrapped_email_uses_same_grounded_text_for_model_and_validation",
+      "seconds": 0.018,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_identity_web::test_interpretation_failure_log_does_not_expose_exception_body",
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
       "node": "tests.test_preview::test_missing_config_has_useful_preview_without_exposing_app",
-      "seconds": 0.011,
+      "seconds": 0.018,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F05_two_actual_workers",
-      "seconds": 0.756,
+      "seconds": 0.939,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F06_F08_sigkill_restart_duplicate_contact[before-post]",
-      "seconds": 1.038,
+      "seconds": 1.121,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F06_F08_sigkill_restart_duplicate_contact[after-provider-success]",
-      "seconds": 1.122,
+      "seconds": 1.163,
       "status": "PASSED"
     },
     {
       "node": "tests.test_process::test_F26_watchdog_survives_worker",
-      "seconds": 0.732,
+      "seconds": 0.823,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_agreement_replay_and_provider_reconciliation",
+      "seconds": 0.014,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_cross_customer_forged_and_superseded_acceptance",
+      "seconds": 0.004,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_expiry_and_warehouse_gate",
+      "seconds": 0.005,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_untrusted_agent_cannot_create_offer_or_payment",
+      "seconds": 0.004,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_catalog_snapshot_not_changed_by_later_configuration",
+      "seconds": 0.003,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_slack_url_readback_and_unchanged_update_suppression",
+      "seconds": 0.027,
+      "status": "PASSED"
+    },
+    {
+      "node": "tests.test_resolution::test_customer_ui_isolation_csrf_and_operator_boundary",
+      "seconds": 0.091,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_slow_observation_cannot_authorize",
-      "seconds": 0.018,
+      "seconds": 0.005,
       "status": "PASSED"
     },
     {
@@ -288,7 +333,7 @@
     },
     {
       "node": "tests.test_review_fixes::test_provider_key_expiry_can_duplicate_but_app_horizon_prevents_it",
-      "seconds": 0.008,
+      "seconds": 0.006,
       "status": "PASSED"
     },
     {
@@ -303,12 +348,12 @@
     },
     {
       "node": "tests.test_review_fixes::test_http_warehouse_requires_secret",
-      "seconds": 0.064,
+      "seconds": 0.057,
       "status": "PASSED"
     },
     {
       "node": "tests.test_review_fixes::test_retry_after_is_durable_lower_bound",
-      "seconds": 0.006,
+      "seconds": 0.008,
       "status": "PASSED"
     },
     {
@@ -348,7 +393,7 @@
     },
     {
       "node": "tests.test_setup::test_init_config_preserves_values_and_hashes_password",
-      "seconds": 0.076,
+      "seconds": 0.081,
       "status": "PASSED"
     }
   ],
@@ -356,6 +401,6 @@
   "live_model": "NOT_RUN",
   "limitations": [
     "Test counts are not exhaustive scenario-family coverage or a proof.",
-    "No connected provider effects or genuine video recorded."
+    "This offline evaluation issues no connected provider effects; see separate connected evidence."
   ]
 }

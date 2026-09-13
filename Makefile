@@ -39,3 +39,8 @@ evidence-export:
 voice-smoke:
 	@echo "BLOCKED: optional voice deferred until connected core gates pass"
 	@exit 1
+
+playground:
+	RP_WEB_PORT=8001 $(PY) -m returnpath web
+resolution-eval:
+	RP_ENV_FILE=/dev/null RP_MODE=local RP_ALLOW_CONNECTED_WRITES=false $(PY) scripts/resolution_eval.py

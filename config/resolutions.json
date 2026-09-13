@@ -1,0 +1,15 @@
+{
+  "version": "merchant-demo-v1",
+  "orders": [
+    {"reference": "7201", "product": "Wireless headphones", "paid_cents": 12000,
+     "offers": [
+       {"id": "keep", "label": "Keep the item · partial refund", "refund_cents": 2400, "requires_return": false},
+       {"id": "return", "label": "Return the item · full refund after inspection", "refund_cents": 12000, "requires_return": true}
+     ]},
+    {"reference": "7202", "product": "Desk lamp", "paid_cents": 6500,
+     "offers": [
+       {"id": "keep", "label": "Keep the item · partial refund", "refund_cents": 1500, "requires_return": false},
+       {"id": "return", "label": "Return the item · full refund after inspection", "refund_cents": 6500, "requires_return": true}
+     ]}
+  ]
+}

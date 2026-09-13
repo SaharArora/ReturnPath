@@ -10,33 +10,68 @@
   ],
   "services": {
     "gmail": {
-      "status": "BLOCKED",
-      "observed_actions": [],
-      "run_id": null
+      "status": "VERIFIED_CONNECTED",
+      "observed_actions": [
+        "intake",
+        "verification_sent",
+        "outcome_readback"
+      ],
+      "run_id": "connected-b77cc543ffe6c223"
     },
     "stripe": {
-      "status": "BLOCKED",
-      "observed_actions": [],
-      "run_id": null
+      "status": "VERIFIED_CONNECTED",
+      "observed_actions": [
+        "test_payment",
+        "partial_refund",
+        "independent_retrieval"
+      ],
+      "run_id": "connected-b77cc543ffe6c223"
     },
     "slack": {
-      "status": "BLOCKED",
-      "observed_actions": [],
-      "run_id": null
+      "status": "VERIFIED_CONNECTED",
+      "observed_actions": [
+        "case_post",
+        "independent_readback"
+      ],
+      "run_id": "connected-b77cc543ffe6c223"
     }
   },
-  "verified_required_app_count": 0,
+  "verified_required_app_count": 3,
   "fingerprints": {
-    "implementation": "70658791534308394f30ff0762046aca5387ae5e7624b8b30e52ab0d379a786d",
+    "implementation": "a9fd5e68fda56040667c3acc4fc5dca69c969159d6083b77627a86127ec1308b",
     "lock": "dcb549d93a5a8b26113b7427eb967376b84cf4ac8697c0865b2c0eb61e419204",
-    "prompt_schema": "5f39d0e7cae7d16d415d809633314f965732c74bfb44cf9c0308ab058eb64213"
+    "prompt_schema": "15e3584144306b32dc1ed5c7861311bf1864cca4e308fb89f6ac23b77a6dd8a4"
   },
-  "connected_run": null,
+  "connected_run": {
+    "run_id": "connected-b77cc543ffe6c223",
+    "observed_at": "2026-09-13T21:40:46.051796+00:00",
+    "mode": "connected-test",
+    "gmail_intake": true,
+    "gmail_outcome_readback": true,
+    "slack_readback": true,
+    "stripe_refund_retrieved": true,
+    "live_model": true,
+    "refund_count": 1,
+    "aggregate_cents": 3000,
+    "gmail_supplied_message_id_preserved": false,
+    "post_success_sigkill": false,
+    "restart_without_reseed": false,
+    "limitations": [
+      "Ordinary run only; connected crash experiment not performed",
+      "Live-model provenance from durable application audit; provider outcomes separately retrieved",
+      "Warehouse evidence simulated; TEST payment, no real cash settlement",
+      "Gmail readback uses the acknowledged provider ID; supplied Message-ID was not preserved, so ambiguous-send lookup remains unverified"
+    ],
+    "ordinary_run_passed": true
+  },
   "offline_report": "evidence/offline-evaluation.json",
   "evidence_index": [
     "evidence/offline-evaluation.json",
     "evidence/offline-evaluation.md",
-    "evidence/local-demo.json"
+    "evidence/local-demo.json",
+    "evidence/connected-ordinary-run.json",
+    "evidence/resolution-live-evaluation.json",
+    "evidence/resolution-offline-evaluation.json"
   ],
   "artifacts": {
     "video": null,
@@ -54,9 +89,21 @@
   ],
   "organizer_access_confirmed": false,
   "limitations": [
-    "No connected service actions or live model evaluation executed",
-    "No genuine recording or transcript",
-    "Partial fault-suite coverage; see implementation status",
-    "Local single-host prototype; not production certified"
-  ]
+    "Connected ordinary three-service run verified; connected crash/restart not yet performed",
+    "Expanded two-agent agreements use simulated payments, not Stripe",
+    "Gmail supplied Message-ID not preserved; ambiguous-send recovery remains unverified",
+    "No public deployment, genuine video or transcript",
+    "Live two-agent evaluation is only a three-scenario smoke test"
+  ],
+  "provider_evidence": "evidence/connected-ordinary-run.json",
+  "resolution_playground": {
+    "status": "IMPLEMENTED_LOCAL",
+    "payment_mode": "SIMULATED",
+    "model_modes": [
+      "live",
+      "stub"
+    ],
+    "catalog": "config/resolutions.json",
+    "deployment_url": null
+  }
 }

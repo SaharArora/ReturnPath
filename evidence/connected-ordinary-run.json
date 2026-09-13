@@ -1,0 +1,22 @@
+{
+  "run_id": "connected-b77cc543ffe6c223",
+  "observed_at": "2026-09-13T21:40:46.051796+00:00",
+  "mode": "connected-test",
+  "gmail_intake": true,
+  "gmail_outcome_readback": true,
+  "slack_readback": true,
+  "stripe_refund_retrieved": true,
+  "live_model": true,
+  "refund_count": 1,
+  "aggregate_cents": 3000,
+  "gmail_supplied_message_id_preserved": false,
+  "post_success_sigkill": false,
+  "restart_without_reseed": false,
+  "limitations": [
+    "Ordinary run only; connected crash experiment not performed",
+    "Live-model provenance from durable application audit; provider outcomes separately retrieved",
+    "Warehouse evidence simulated; TEST payment, no real cash settlement",
+    "Gmail readback uses the acknowledged provider ID; supplied Message-ID was not preserved, so ambiguous-send lookup remains unverified"
+  ],
+  "ordinary_run_passed": true
+}

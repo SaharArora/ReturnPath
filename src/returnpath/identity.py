@@ -14,6 +14,8 @@ def ingest(db, c, event, text, channel="gmail", now=None):
     cid = existing["id"] if existing else str(uuid.uuid4())
     with db:
         db.execute("INSERT OR IGNORE INTO contacts(id,channel,event) VALUES(?,?,?)", (cid, channel, event))
+    if not existing:
+        print("Gmail contact received; interpretation pending" if channel == "gmail" else "Contact received; interpretation pending", flush=True)
     stored = db.execute("SELECT id FROM contacts WHERE channel=? AND event=?", (channel, event)).fetchone()[0]
     if stored != cid:
         return stored
@@ -30,8 +32,11 @@ def ingest(db, c, event, text, channel="gmail", now=None):
             from .limits import reserve
             reserve(db, 'model_calls', 20)
         result = interpret(c, text)
-    except Exception:
-        audit(db, None, "INTERPRETATION_UNKNOWN", {"contact": cid}, now)
+    except Exception as exc:
+        # Exception messages may contain provider bodies or customer input.
+        category = type(exc).__name__
+        audit(db, None, "INTERPRETATION_UNKNOWN", {"contact": cid, "error_type": category}, now)
+        print("Interpretation failed: " + category + "; bounded attempts recorded; no verification issued", flush=True)
         return cid
     case = None
     if result.intent in {"REFUND_STATUS", "RETURN_FOLLOWUP"} and result.order_reference:
@@ -44,6 +49,7 @@ def ingest(db, c, event, text, channel="gmail", now=None):
           "order_reference": result.order_reference, "clarification": result.clarification,
           "model": c.get("RP_MODEL") if c.get("RP_MODE") == "connected-test" else "DETERMINISTIC_STUB",
           "prompt_revision": "v1"}, now)
+    print("Interpretation complete; " + ("case matched; verification required" if case else "no case matched"), flush=True)
     return cid
 
 
@@ -64,6 +70,7 @@ def issue(db, provider, contact, base_url, now=None):
                    (digest, contact, row["case_id"], now + 900, now))
     # Secret only in trusted recipient email. Never journal/model/log URL.
     provider.send("verify:" + digest, row["customer"], "Confirm this contact's order status request on this Mac: " + base_url + "/verify/" + token)
+    print("Verification email submitted to Gmail; awaiting customer confirmation", flush=True)
     return True
 
 

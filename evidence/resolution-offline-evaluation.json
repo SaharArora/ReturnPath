@@ -1,0 +1,191 @@
+{
+  "mode": "DETERMINISTIC_OFFLINE_BASELINE",
+  "model": "stub",
+  "revision": "resolution-v1",
+  "scope": "Three preference/clarification scenarios; not a security or crash benchmark",
+  "episodes": 30,
+  "passed": 30,
+  "elapsed_seconds": 0.1,
+  "results": [
+    {
+      "scenario": "keep",
+      "trial": 1,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 2,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 3,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 4,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 5,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 6,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 7,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 8,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 9,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "keep",
+      "trial": 10,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 1,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 2,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 3,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 4,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 5,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 6,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 7,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 8,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 9,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 10,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 1,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 2,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 3,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 4,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 5,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 6,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 7,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 8,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 9,
+      "passed": true,
+      "state": "CLARIFY"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 10,
+      "passed": true,
+      "state": "CLARIFY"
+    }
+  ]
+}

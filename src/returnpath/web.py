@@ -38,7 +38,7 @@ def create_app(c):
         return response
 
     def page(content):
-        return HTMLResponse("<!doctype html><html><head><title>ReturnPath</title><style>body{font:16px system-ui;max-width:1000px;margin:3em auto;padding:1em;background:#f5f5f0;color:#18312c}article{background:white;padding:1.5em;margin:1em 0;border:1px solid #ccc}pre{white-space:pre-wrap}a{color:#175d51}input,button{padding:.7em;margin:.5em}</style></head><body><h1>ReturnPath</h1>" + content + "</body></html>")
+        return HTMLResponse("<!doctype html><html><head><title>ReturnPath</title><style>body{font:16px system-ui;max-width:1000px;margin:3em auto;padding:1em;background:#f5f5f0;color:#18312c}article{background:white;padding:1.5em;margin:1em 0;border:1px solid #ccc}pre{white-space:pre-wrap}a{color:#175d51}textarea{display:block;width:95%;min-height:100px;padding:12px;margin:12px 0}.badge{font-size:12px;letter-spacing:.08em;color:#52665f}button{background:#175d51;color:white;border:0;border-radius:6px;cursor:pointer}input,button{padding:.7em;margin:.5em}</style></head><body><h1>ReturnPath</h1>" + content + "</body></html>")
 
     def auth(request):
         if not request.session.get("operator"):
@@ -85,7 +85,7 @@ def create_app(c):
         auth(request)
         db = connect(db_path)
         try:
-            content = '<p>' + html.escape(c.get("RP_MODE", "local")) + ' · SIMULATED RETURN EVIDENCE · no automatic restart</p>'
+            content = '<nav><a href="/playground">Customer playground</a> · <a href="/resolutions">Resolution queue</a></nav><p>' + html.escape(c.get("RP_MODE", "local")) + ' · SIMULATED RETURN EVIDENCE · no automatic restart</p>'
             for row in db.execute("SELECT * FROM cases"):
                 content += '<article><a href="/cases/' + row['id'] + '">Order ' + row['order_ref'] + '</a><p>Original $100 · Approved $30</p><p>' + html.escape(row['summary']) + '</p></article>'
             for row in db.execute("SELECT * FROM heartbeats"):
@@ -141,4 +141,6 @@ def create_app(c):
         finally:
             db.close()
 
+    from .resolution_web import register
+    register(app, c, db_path, page, auth, csrf)
     return app

@@ -1,5 +1,7 @@
 """Actual provider APIs; never fall back to simulators. Contract evidence remains opt-in."""
 import base64
+import html
+import re
 import email
 from email.message import EmailMessage
 from email.policy import default
@@ -9,6 +11,13 @@ import time
 import uuid
 import httpx
 from .auth import gmail, slack_read, stripe_client
+
+
+def slack_equivalent(actual, expected):
+    # Slack renders bare URLs as <URL>; only normalize that documented markup.
+    def canonical(text):
+        return re.sub(r'<(https?://[^<>|]+)>', r'\1', html.unescape(text))
+    return canonical(actual) == canonical(expected)
 
 
 class Connected:
@@ -193,7 +202,7 @@ class Connected:
         with self.db:
             self.db.execute("UPDATE slack_outbox SET ts=? WHERE id=?", (result["ts"], case))
         read = slack_read(self.c, "conversations.history", channel=payload["channel"], latest=result["ts"], inclusive=True, limit=1)
-        if not any(m.get("ts") == result["ts"] and m.get("text") == text for m in read.get("messages", [])):
+        if not any(m.get("ts") == result["ts"] and slack_equivalent(m.get("text", ""), text) for m in read.get("messages", [])):
             raise ValueError("Slack readback unverified")
         with self.db:
             self.db.execute('INSERT OR REPLACE INTO slack_content VALUES(?,?)', (case, content_hash))

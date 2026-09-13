@@ -39,6 +39,9 @@ def validate(data, text):
 def interpret(c, text):
     if not text or len(text) > 8000 or 'http' in text.lower():
         raise ValueError("Input exceeds bounded interpreter scope; manual clarification required")
+    # MIME line wrapping is presentation, not evidence. Send and validate the
+    # same canonical text; references and exact source-span checks stay intact.
+    text = re.sub(r"\s+", " ", text).strip()
     if c.get("RP_MODE", "local") == "local":
         refs = re.findall(r"\border\s+(\d{4,12})\b", text, re.I)
         ref = refs[0] if len(set(refs)) == 1 else None

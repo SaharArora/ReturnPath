@@ -1,0 +1,29 @@
+{
+  "mode": "LIVE_MODEL",
+  "model": "gpt-4o-mini",
+  "revision": "resolution-v1",
+  "scope": "Three preference/clarification scenarios; not a security or crash benchmark",
+  "episodes": 3,
+  "passed": 3,
+  "elapsed_seconds": 6.92,
+  "results": [
+    {
+      "scenario": "keep",
+      "trial": 1,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "return",
+      "trial": 1,
+      "passed": true,
+      "state": "OFFERED"
+    },
+    {
+      "scenario": "clarify",
+      "trial": 1,
+      "passed": true,
+      "state": "CLARIFY"
+    }
+  ]
+}

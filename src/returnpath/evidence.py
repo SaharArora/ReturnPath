@@ -15,10 +15,11 @@ def fingerprints(root=ROOT):
         return h.hexdigest()
     code = [*list((root / 'src').rglob('*.py')), *list((root / 'tests').rglob('*.py')),
             *list((root / 'scripts').rglob('*.py')), *list((root / 'fixtures').glob('*.json'))]
+    code += list((root / 'config').glob('*.json'))
     code += [root / name for name in ('Makefile', 'pyproject.toml') if (root / name).is_file()]
     return {'implementation': digest(code),
             'lock': digest([root / 'requirements.lock']),
-            'prompt_schema': digest([root / 'src/returnpath/interpreter.py'])}
+            'prompt_schema': digest([p for p in [root / 'src/returnpath/interpreter.py', root / 'src/returnpath/resolution.py'] if p.exists()])}
 
 
 def readiness(manifest, root=ROOT):

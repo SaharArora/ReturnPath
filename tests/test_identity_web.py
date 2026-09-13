@@ -72,3 +72,34 @@ def test_F29_operator_auth_and_scoped_confirmation(tmp_path):
     assert client.post('/fault').status_code == 404
     assert client.get('/', headers={'host': 'evil.example'}).status_code == 400
     assert client.get('/').headers['referrer-policy'] == 'no-referrer'
+
+
+def test_mime_wrapped_email_uses_same_grounded_text_for_model_and_validation(monkeypatch):
+    import json
+    import httpx
+    from returnpath.interpreter import interpret
+    def post(self, url, **kwargs):
+        sent = kwargs['json']['input']
+        assert sent == 'I returned order 4127 and still have not received my refund.'
+        data = {'intent': 'REFUND_STATUS', 'order_reference': '4127', 'return_reference': None,
+                'missing_fields': [], 'clarification': None,
+                'source_spans': ['order 4127', 'have not received my refund']}
+        return httpx.Response(200, request=httpx.Request('POST', url), json={
+            'status': 'completed', 'output': [{'content': [{'type': 'output_text', 'text': json.dumps(data)}]}]})
+    monkeypatch.setattr(httpx.Client, 'post', post)
+    c = Config({'RP_ENV_FILE': '/dev/null', 'RP_MODE': 'connected-test',
+                'OPENAI_API_KEY': 'synthetic', 'RP_MODEL': 'synthetic'})
+    assert interpret(c, 'I returned order 4127 and still have\r\nnot received my refund.\r\n').order_reference == '4127'
+
+
+def test_interpretation_failure_log_does_not_expose_exception_body(world, monkeypatch, capsys):
+    import returnpath.identity as identity
+    def fail(*args):
+        raise ValueError('private-email-body-and-token')
+    monkeypatch.setattr(identity, 'interpret', fail)
+    db, _ = world
+    ingest(db, Config({'RP_ENV_FILE': '/dev/null'}), 'log-failure', 'order 4127')
+    output = capsys.readouterr().out
+    assert 'Interpretation failed: ValueError' in output
+    assert 'private-email-body-and-token' not in output
+    assert 'private-email-body-and-token' not in db.execute('SELECT data FROM audit ORDER BY id DESC LIMIT 1').fetchone()[0]

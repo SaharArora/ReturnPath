@@ -9,3 +9,10 @@ Python 3.12, locked pip dependencies, FastAPI server-rendered pages, SQLite jour
 `connected.Connected` uses actual Gmail/Stripe/Slack APIs, without fake fallback. `fake.Fake` persists provider records in a separate database, permits multiple partial refunds, retains idempotent results including synthetic errors and models 24-hour expiry. `warehouse` exposes a protected loopback HTTP simulator endpoint; test-only fixtures may directly supply warehouse state.
 
 `watchdog.inspect` runs without the planner and sends its own alert. `tests/test_core.py::oracle` and process tests inspect external simulator records independently. `oracle.stripe_records` is a separate read-only real TEST payment oracle, not yet exercised. The evidence checker validates recorded consistency, not provider authenticity.
+
+
+## Resolution playground extension
+
+`resolution.py` snapshots a validated merchant catalog, runs a customer advocate then a merchant representative with separate fixed prompts, validates catalog offer IDs, and stores expiring offers. An explicit customer-session acceptance transaction writes immutable agreement terms. The operator-only simulated executor uses the agreement ID in a separate provider ledger; replay reconciles the same entry. `resolution_web.py` provides session-scoped customer routes and authenticated operator inspection/execution. No customer request or model output supplies a financial amount.
+
+The playground is isolated from the fixed Stripe TEST workflow. Variable agreements do not yet authorize connected refunds. A RUNNING round left by process death stays visibly unresolved; no unbounded retry or automatic restart is claimed. Reflection, public deployment and an expanded connected benchmark are not implemented.
